@@ -1,0 +1,36 @@
+[
+  {
+    "_id" : "0",
+    "date" : "2019-03-12T08:32:37.466Z",
+    "topic" : "Pour ou contre la compensation par bloc en licence ?",
+    "open" : "true",
+    "desc" : "le 12/03/19, la CFVU a mis fin à la compensation automatique entre toutes les UEs d'un semestre de licence, maintenant cela se fera par \"blocs de compétences\" qui n'ont pas encore été définis. Par exemple, si les transversales sont dans un bloc et les autres UEs dans un autre, cela veut dire que le la note de TR ne compensera pas les autres pour aider à avoir le semestre",
+    "user" : "albrecht.albert",
+    "contributions" : [
+        {
+          "user"      : "berenice.bernardin",
+          "content"   : "Moi je trouve ça très bien car c'est quand même n'importe quoi de valider le S1 avec 15 en danse et 14 en anglais alors qu'on a 8 en programmation !",
+          "date"      : "2019-03-12T11:32:37.466Z",
+          "likers"    : ["romuald.thion"],
+          "unlikers"  : ["albrecht.albert", "communiste.camarade"]
+        },
+        {
+          "user"      : "albrecht.albert",
+          "content"   : "@berenice.bernardin mais tu dis trop nawak ! Si tu prends foot c'est trop chaud d'avoir 15 en sport !",
+          "date"      : "2019-03-12T12:32:37.466Z",
+          "likers"    : ["albrecht.albert", "communiste.camarade","romuald.thion"],
+          "unlikers"  : ["berenice.bernardin"]
+        }
+    ]
+  },
+  {
+    "_id" : "1",
+    "date" : "2019-03-08T08:32:37.466Z",
+    "topic" : "Qui a le dernier mot dans les décisions sur la L1 et la L2 ? ",
+    "open" : "true",
+    "desc" : "Maintenant qu'il y a un directeur de portail, en fait, qui fait la maquette de licence ?",
+    "user" : "romuald.thion",
+    "contributions" : [
+    ]
+  }
+ ]
