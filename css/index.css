@@ -139,6 +139,10 @@ header #connexion:hover{
 .debat-overview .derniere-contrib{
 	font-size: 13px;
 }
+.debat-overview .derniere-contrib i{
+	font-size: 14px;
+	vertical-align: baseline;
+}
 .debat-overview .nb-contrib{
 	height: 40px;
 	width: 40px;
