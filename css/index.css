@@ -21,7 +21,6 @@ body{
 
 
 
-/*popup de connexion*/
 #darken{
 	position: fixed;
 	z-index: 1000;
@@ -31,6 +30,9 @@ body{
 	top: 0px; bottom: 0px; left: 0px; right: 0px;
 	display: none;
 }
+
+
+/*popup de connexion*/
 #connexion-popup{
 	position: fixed;
 	background-color: white;
@@ -71,6 +73,22 @@ body{
 }
 
 
+
+/*popup de création d'un nouveau débat*/
+#creation-debat{
+	position: fixed;
+	background-color: white;
+	width: 500px;
+	display: block;
+	border-radius: 4px;
+	padding: 20px;
+	z-index: 2200;
+	left: 0px; right: 0px;
+	margin: 0px auto;
+	margin-top: 50vh;
+	transform: translateY(-50%);
+	display: none;
+}
 
 
 
@@ -219,19 +237,23 @@ header #connexion:hover{
 /*vue détaillée d'un débat*/
 #debat-detailview{
 	padding: 25px;
+	padding-right: 0px;
 	position: relative;
 	width: calc(100vw - 35vw);
 	overflow-y: auto;
+}
+#debat-detailview .scrollbox{
+	overflow-y: auto;
+	max-height: calc(100vh - 145px);
 }
 
 /*sujet d'un débat*/
 #debat-detailview #sujet{
 	padding-bottom: 15px;
+	padding-right: 15px;
 	margin: 0px auto;
 	font-size: 15px;
 	color: #424242;
-	width: 100%;
-	min-width: 100%;
 }
 #sujet h1{
 	text-align: center;
@@ -255,9 +277,9 @@ header #connexion:hover{
 /*vue messages*/
 /*todo: améliorer quand il y a bcp de messages (scrollbox)*/
 #messages{
-	max-height: 380px; 
+/*	max-height: 380px; 
 	overflow-y: auto;
-}
+*/}
 .message{
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
 	padding: 10px;

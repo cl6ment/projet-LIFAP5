@@ -175,7 +175,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	})
 
 	// clic sur annuler
-	$("#annuler").addEventListener('click', () => {
+	$("#connexion-popup #annuler").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
 	})
@@ -184,11 +184,12 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	$("#darken").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
+		$("#creation-debat").style.display = 'none';
 	})
 
 
 	// clic sur valider
-	$("#valider").addEventListener('click', () => {
+	$("#connexion-popup #valider").addEventListener('click', () => {
 
 		const api = $("#clef-api").value;
 
@@ -208,7 +209,9 @@ request('./json/Projet-2019-topics.json').then((data) => {
 
 	// clic sur le fab
 	$(".fab").addEventListener('click', () => {
-		console.log("[FAB]")
+		$("#creation-debat").style.display = 'block';
+		$("#darken").style.display = 'block';
+
 	})
 
 

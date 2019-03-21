@@ -35,6 +35,14 @@
 	<div id="creation-debat">
 		<!-- todo: permettre la création d'un débat -->
 		<!-- topic, desc + (auteur, date, _id)-->
+
+		<input type="text" id="topic-debat" placeholder="Entrez le titre de votre nouveau débat">
+		<textarea placeholder="Description du débat"></textarea>
+		<div>
+			<div id="annuler">Annuler</div>
+			<div id="publier">Valider</div>
+		</div>
+
 	</div>
 
 
@@ -76,15 +84,17 @@
 
 		<div id="debat-detailview">
 
-			<div id="action-debat">
-				<!-- todo: ajouter des actions quand on est propriétaire du débat -->
+			<div class="scrollbox">
+				<div id="action-debat">
+					<!-- todo: ajouter des actions quand on est propriétaire du débat -->
+				</div>
+				
+				<div id="sujet">
+					<h1>Cela manque de débat ici !</h1>
+				</div>
+
+				<div id="messages"></div>
 			</div>
-			
-			<div id="sujet">
-				<h1>Cela manque de débat ici !</h1>
-			</div>
-			
-			<div id="messages"></div>
 
 			<input type="text" id="ajouter-message" placeholder="Joignez votre voix au débat ! (entrée pour envoyer)">
 
