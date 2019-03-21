@@ -235,6 +235,11 @@ header #connexion:hover{
 	width: 100%;
 	min-width: 100%;
 }
+#sujet h1{
+	text-align: center;
+	margin-top: 35vh;
+	font-weight: normal;
+}
 #sujet h2{
 	margin: 0px;
 	font-weight: 600;
@@ -313,5 +318,4 @@ header #connexion:hover{
 	width: 100%;
 	border: none;
 	padding: 15px 15px;
-	/*border-top: 1px solid #b9bcc6;*/
 }

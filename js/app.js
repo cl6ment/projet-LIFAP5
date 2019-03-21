@@ -195,6 +195,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 		$("#darken").style.display = 'none';
 	})
 
+
 	// clic sur valider
 	$("#valider").addEventListener('click', () => {
 
@@ -223,6 +224,13 @@ request('./json/Projet-2019-topics.json').then((data) => {
 
 
 	// ajout d'un message
+	$("#ajouter-message").addEventListener('keyup', function(e){
+
+		if(e.which === 13){
+			const content = $("#ajouter-message").value
+			console.log(content)
+		}
+	})
 })
 
 
