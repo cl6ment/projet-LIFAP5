@@ -50,7 +50,7 @@ function creerSujetHTML(obj){
 					${transformeDate(obj.date)}
 				</div>
 			</div>
-			<div class="nb-contrib">${obj.contributions.length}</div
+			<div class="nb-contrib">${obj.contributions.length}</div>
 		</div>`;
 }
 
@@ -60,17 +60,11 @@ function creerSujetHTML(obj){
 function afficherListeDebats(listeObj){
 	const html = $("#liste-debat-overview .scrollbox")
 	
-	// reset du contenu primitif
-	html.innerHTML = '';
-		
-
-
-	// TODO: remplacer le foreach par un reduce
-	// affichage du html 
-	listeObj.forEach(function(e){
-		html.innerHTML = html.innerHTML + creerSujetHTML(e)
-	})
-
+	// insertion du html
+	html.innerHTML = listeObj.reduce(function(acc, v){
+		acc += creerSujetHTML(v)
+		return acc;
+	}, '');
 
 	// pose des ecouteurs d'event
 	listeObj.forEach(function(e){
@@ -104,35 +98,42 @@ function afficherCommentaire(obj){
 
 		<div class="user">
 			<div class="pseudo">${obj.user}</div>
-				 &#8226; 
+			&#8226; 
 			<div class="date">${transformeDate(obj.date)}</div>
 		</div>
 
 		<div class="content">${obj.content}</div>
-
 		<div class="action">
-			<div class="dislike">
-				<i class="material-icons">sentiment_very_dissatisfied</i>
-			</div>
-			<div class="like">
-				<i class="material-icons">sentiment_very_satisfied</i>
-			</div>
-		</div>
 
+			<div class="dislike">
+				<i class="material-icons">thumb_up</i>
+				<span>${obj.likers.length}</span>
+			</div>
+			
+			<div class="like">
+				<i class="material-icons">thumb_down</i>
+				<span>${obj.unlikers.length}</span>
+			</div>
+
+			<div class="supprimer">
+				<i class="material-icons">delete</i>
+			</div>
+
+			<div class="modifier">
+				<i class="material-icons">edit</i>
+			</div>
+
+		</div>			
 	</div>`;
 }
 
 
 
 function afficherListeCommentaires(data){
-
-	
-
 	return data.contributions.reduce(function(acc, v){
 		acc += afficherCommentaire(v);
 		return acc;
 	}, "");
-
 }
 
 
@@ -141,13 +142,7 @@ function afficherListeCommentaires(data){
 // dummy load
 request('./json/Projet-2019-topics.json').then((data) => {
 	
-	// todo ajout d'un splash screen quand aucun débat n'est selectionné
 	// todo: rajouter un on dom content loaded
-	// todo: parser la date avec l'api Date()
-	// todo: faire une copie de data
-	// todo: utiliser reduce a la place de foreach
-	
-
 
 	// affiche la liste des débats
 	afficherListeDebats(data);
@@ -158,9 +153,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	$("#recherche-text").addEventListener('keyup', (e) => {
 
 		if(e.which === 13){
-
 			const query = $("#recherche-text").value;
-
 			const filteredData = data.filter(function(e){
 				if(e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1){
 					return true;
@@ -168,9 +161,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 					return false;
 				}
 			})
-
 			afficherListeDebats(filteredData);
-
 		}
 
 	})

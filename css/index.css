@@ -220,7 +220,6 @@ header #connexion:hover{
 #debat-detailview{
 	padding: 25px;
 	position: relative;
-	max-height: calc(100vh - 100px);
 	width: calc(100vw - 35vw);
 	overflow-y: auto;
 }
@@ -230,7 +229,6 @@ header #connexion:hover{
 	padding-bottom: 15px;
 	margin: 0px auto;
 	font-size: 15px;
-	/*border-bottom: 1px solid #b9bcc6;*/
 	color: #424242;
 	width: 100%;
 	min-width: 100%;
@@ -255,6 +253,11 @@ header #connexion:hover{
 }
 
 /*vue messages*/
+/*todo: améliorer quand il y a bcp de messages (scrollbox)*/
+#messages{
+	max-height: 380px; 
+	overflow-y: auto;
+}
 .message{
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
 	padding: 10px;
@@ -263,7 +266,6 @@ header #connexion:hover{
 	margin: 25px auto;
 	margin-bottom: 60px;
 	width: calc(90% - 20px);
-	display: flex;
 	position: relative;
 }
 .message .user{
@@ -293,14 +295,61 @@ header #connexion:hover{
 	font-size: 15px;
 	color: #424242;
 }
-.message .action{
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
+
+
+/*action sur un message (like, dislike)*/
+.action{
+	display: flex;
+	margin-top: 10px;
+	justify-content: flex-end;
+	overflow: hidden;
 }
-.message .action div{
+.action div{
 	cursor: pointer;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50px;
+	height: 30px;
+	margin: 0px 10px;
+	color: white;
+	border-radius: 50px;
+	font-size: 12px;
+	background-color: var(--accent-blue);
+	border: 1px solid var(--accent-blue);
+	visibility: hidden;
+	transform: translateY(80px);
+}
+.action div:hover{
+	background-color: white;
+	color: var(--accent-blue);
+}
+/*effet d'apparition*/
+.action .dislike{
+	transition: all 200ms;
+}
+.action .like{
+	transition: all 300ms;
+}
+.action .supprimer{
+	transition: all 400ms;
+	background-color: #EF5350;
+	border: 1px solid #EF5350;
+}
+.action .modifier{
+	transition: all 500ms;
+}
+
+.message:hover .action div{
+	transform: translateY(0px);
+	visibility: visible;
+}
+
+.action div i{
+	font-size: 14px;
+	margin-right: 2px;
+	vertical-align: baseline;
 }
 
 
