@@ -105,7 +105,7 @@ function afficherCommentaire(obj){
 		<div class="user">
 			<div class="pseudo">${obj.user}</div>
 				 &#8226; 
-			<div class="date">${obj.date}</div>
+			<div class="date">${transformeDate(obj.date)}</div>
 		</div>
 
 		<div class="content">${obj.content}</div>
@@ -129,7 +129,8 @@ function afficherListeCommentaires(data){
 	
 
 	return data.contributions.reduce(function(acc, v){
-		return afficherCommentaire(v);
+		acc += afficherCommentaire(v);
+		return acc;
 	}, "");
 
 }
@@ -178,9 +179,33 @@ request('./json/Projet-2019-topics.json').then((data) => {
 
 	// clic sur connexion
 	$("#connexion").addEventListener('click', () => {
-		console.log("[CONNEXION]")
+		$("#connexion-popup").style.display = 'block';
+		$("#darken").style.display = 'block';
 	})
 
+	// clic sur annuler
+	$("#annuler").addEventListener('click', () => {
+		$("#connexion-popup").style.display = 'none';
+		$("#darken").style.display = 'none';
+	})
+
+	// clic sur darken
+	$("#darken").addEventListener('click', () => {
+		$("#connexion-popup").style.display = 'none';
+		$("#darken").style.display = 'none';
+	})
+
+	// clic sur valider
+	$("#valider").addEventListener('click', () => {
+
+		const api = $("#clef-api").value;
+
+		if(api != ""){
+			$("#connexion-popup").style.display = 'none';
+			$("#darken").style.display = 'none';
+		}
+
+	})
 
 
 	// clic sur trier

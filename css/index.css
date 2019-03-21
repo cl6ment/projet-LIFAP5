@@ -21,6 +21,59 @@ body{
 
 
 
+/*popup de connexion*/
+#darken{
+	position: fixed;
+	z-index: 1000;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 100vw;
+	height: 100vh;
+	top: 0px; bottom: 0px; left: 0px; right: 0px;
+	display: none;
+}
+#connexion-popup{
+	position: fixed;
+	background-color: white;
+	width: 500px;
+	display: block;
+	border-radius: 4px;
+	padding: 20px;
+	z-index: 2200;
+	left: 0px; right: 0px;
+	margin: 0px auto;
+	margin-top: 50vh;
+	transform: translateY(-50%);
+	display: none;
+}
+#connexion-popup input{
+	border: 1px solid var(--accent-blue);
+	padding: 5px;
+	outline: none;
+	width: 100%;
+}
+#connexion-popup div{
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+#connexion-popup #annuler, #connexion-popup #valider{
+	display: block;
+	padding: 5px 20px;
+	margin: 0px 10px;
+	cursor: pointer;
+	font-size: 13px;
+	background-color: var(--accent-blue);
+	color: white;
+	border-radius: 4px;
+}
+#connexion-popup #annuler{
+	background-color: #9E9E9E;
+}
+
+
+
+
+
 /*header*/
 header{
 	display: flex;
@@ -70,10 +123,15 @@ header #connexion:hover{
 
 
 
+
+
+
 /*wrap*/
 #wrap{
 	display: flex;
 }
+
+
 
 
 /*liste des débats*/
@@ -163,6 +221,7 @@ header #connexion:hover{
 	padding: 25px;
 	position: relative;
 	max-height: calc(100vh - 100px);
+	width: calc(100vw - 35vw);
 	overflow-y: auto;
 }
 
@@ -197,6 +256,7 @@ header #connexion:hover{
 	padding-top: 25px;
 	border-radius: 4px;
 	margin: 25px auto;
+	margin-bottom: 60px;
 	width: calc(90% - 20px);
 	display: flex;
 	position: relative;
