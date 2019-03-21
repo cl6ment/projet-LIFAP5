@@ -75,7 +75,8 @@ function afficherListeDebats(listeObj){
 	// pose des ecouteurs d'event
 	listeObj.forEach(function(e){
 		$("#_"+e._id).addEventListener('click', () => {
-			$("#debat-detailview").innerHTML = afficherDetailDebat(e)
+			$("#debat-detailview #sujet").innerHTML = afficherDetailDebat(e);
+			$("#messages").innerHTML = afficherListeCommentaires(e);
 		})
 	})
 
@@ -85,23 +86,53 @@ function afficherListeDebats(listeObj){
 
 function afficherDetailDebat(obj){
 	return `
-	<div id="sujet">
-		<h2>${obj.topic}</h2>
-
-		<div id="auteur">
-			<span>Initiateur: </span> ${obj.user}				
-		</div>
-
-		<div id="date">
-			<span>Début: </span>${transformeDate(obj.date)}				
-		</div>
-
-		<p>${obj.desc}</p>
-	</div>`
+	<h2>${obj.topic}</h2>
+	<div id="auteur">
+		<span>Initiateur: </span> ${obj.user}				
+	</div>
+	<div id="date">
+		<span>Début: </span>${transformeDate(obj.date)}		
+	</div>
+	<p>${obj.desc}</p>`
 }
 
 
 
+function afficherCommentaire(obj){
+	return `
+	<div class="message" message-id="">
+
+		<div class="user">
+			<div class="pseudo">${obj.user}</div>
+				 &#8226; 
+			<div class="date">${obj.date}</div>
+		</div>
+
+		<div class="content">${obj.content}</div>
+
+		<div class="action">
+			<div class="dislike">
+				<i class="material-icons">sentiment_very_dissatisfied</i>
+			</div>
+			<div class="like">
+				<i class="material-icons">sentiment_very_satisfied</i>
+			</div>
+		</div>
+
+	</div>`;
+}
+
+
+
+function afficherListeCommentaires(data){
+
+	
+
+	return data.contributions.reduce(function(acc, v){
+		return afficherCommentaire(v);
+	}, "");
+
+}
 
 
 

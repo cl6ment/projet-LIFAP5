@@ -79,11 +79,11 @@ header #connexion:hover{
 /*liste des débats*/
 #liste-debat-overview{
 	background-color: var(--bg-grey);
-	width: 40vw;
-	min-width: 40vw;
-	max-width: 40vw;
+	width: 35vw;
+	min-width: 35vw;
+	max-width: 35vw;
+	max-width: 800px;
 	height: calc(100vh - 70px);
-	/*max-height: calc(100vh - 70px);*/
 	position: relative;
 	overflow-y: hidden;
 }
@@ -162,6 +162,8 @@ header #connexion:hover{
 #debat-detailview{
 	padding: 25px;
 	position: relative;
+	max-height: calc(100vh - 100px);
+	overflow-y: auto;
 }
 
 /*sujet d'un débat*/
@@ -169,8 +171,10 @@ header #connexion:hover{
 	padding-bottom: 15px;
 	margin: 0px auto;
 	font-size: 15px;
-	border-bottom: 1px solid #b9bcc6;
+	/*border-bottom: 1px solid #b9bcc6;*/
 	color: #424242;
+	width: 100%;
+	min-width: 100%;
 }
 #sujet h2{
 	margin: 0px;
@@ -186,8 +190,62 @@ header #connexion:hover{
 	text-align: justify;
 }
 
+/*vue messages*/
+.message{
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+	padding: 10px;
+	padding-top: 25px;
+	border-radius: 4px;
+	margin: 25px auto;
+	width: calc(90% - 20px);
+	display: flex;
+	position: relative;
+}
+.message .user{
+	background-color: var(--accent-blue);
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+	position: absolute;
+	top: -15px;
+	left: -15px;
+	color: white;
+	color: black;
+	font-size: 13px;
+	display: flex;
+	padding: 7px 15px;
+	border-radius: 20px;
+	cursor: default;
+	color: white;
+}
+.message .user .pseudo{
+	margin-right: 5px;
+}	
+.user .date{
+	font-size: 12px;
+	margin-left: 5px;
+}
+
+.message .content{
+	font-size: 15px;
+	color: #424242;
+}
+.message .action{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+.message .action div{
+	cursor: pointer;
+}
+
+
+
+
+
+
 /*ajouter un message à un débat*/
 #debat-detailview #ajouter-message{
+	box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.1);
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
@@ -195,5 +253,5 @@ header #connexion:hover{
 	width: 100%;
 	border: none;
 	padding: 15px 15px;
-	border-top: 1px solid #b9bcc6;
+	/*border-top: 1px solid #b9bcc6;*/
 }
