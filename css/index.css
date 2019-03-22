@@ -205,13 +205,13 @@ header #connexion:hover{
 	overflow-y: auto;
 }
 
-#liste-debat-overview #filtrer{
+#liste-debat-overview #trier{
 	padding: 2px 30px;
 	cursor: pointer;
 	color: #b9bcc6;
 	font-size: 13px;
 }
-#liste-debat-overview #filtrer i{
+#liste-debat-overview #trier i{
 	line-height: 50px;
 	font-size: 20px;
 	margin-right: 5px;

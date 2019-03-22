@@ -26,13 +26,17 @@ async function request(url, typeRetour='json'){
 
 function recupDateDerniereActivite(obj){
 
+	// overkill ???
+	const sorted = obj.sort((a, b) => ((a.date > b.date) ? -1 : 1))
+
+	return sorted[0].date;
 }
 
 
 
 function transformeDate(d){
 	d = new Date(d);
-	return d.getDay() + '/' + d.getMonth() + '/' + d.getFullYear();
+	return ('0' + d.getDay()).slice(-2) + '/' + ('0' + d.getMonth()).slice(-2) + '/' + d.getFullYear();
 }
 
 
@@ -42,16 +46,16 @@ function transformeDate(d){
 // prend un array et en extrait les infos pour créer du HTML
 function creerSujetHTML(obj){
 	return `
-		<div class="debat-overview" id="_${obj._id}">
-			<div>
-				<div class="sujet">${obj.topic}</div>
-				<div class="derniere-contrib">
-					<i class="material-icons">timelapse</i>
-					${transformeDate(obj.date)}
-				</div>
+	<div class="debat-overview" id="_${obj._id}">
+		<div>
+			<div class="sujet">${obj.topic}</div>
+			<div class="derniere-contrib">
+				<i class="material-icons">timelapse</i>
+				${transformeDate(recupDateDerniereActivite(obj.contributions))}
 			</div>
-			<div class="nb-contrib">${obj.contributions.length}</div>
-		</div>`;
+		</div>
+		<div class="nb-contrib">${obj.contributions.length}</div>
+	</div>`;
 }
 
 
@@ -60,19 +64,54 @@ function creerSujetHTML(obj){
 function afficherListeDebats(listeObj){
 	const html = $("#liste-debat-overview .scrollbox")
 	
+
+
 	// insertion du html
-	html.innerHTML = listeObj.reduce(function(acc, v){
+	html.innerHTML = listeObj.reduce((acc, v) => {
 		acc += creerSujetHTML(v)
 		return acc;
 	}, '');
 
 	// pose des ecouteurs d'event
-	listeObj.forEach(function(e){
+	listeObj.forEach((e) => {
 		$("#_"+e._id).addEventListener('click', () => {
+
 			$("#debat-detailview #sujet").innerHTML = afficherDetailDebat(e);
 			$("#messages").innerHTML = afficherListeCommentaires(e);
+
+
+			e.contributions.forEach((v, i) => {
+				$("#mess-"+i+" .dislike").addEventListener('click', (e) => {
+					console.log('[dislike]')
+					console.log($("#mess-"+i))
+					// todo : requete
+				})
+
+				$("#mess-"+i+" .like").addEventListener('click', (e) => {
+					console.log('[like]')
+					console.log($("#mess-"+i))
+					// todo: requete
+				})
+
+				$("#mess-"+i+" .supprimer").addEventListener('click', (e) => {
+					console.log('[supprimer]')
+					console.log($("#mess-"+i))
+					// todo : requete
+				})
+
+				$("#mess-"+i+" .modifier").addEventListener('click', (e) => {
+					console.log('[modifier]')
+					console.log($("#mess-"+i))
+					// todo: requete
+				})
+
+				// todo: ecouteur de suppression et d'édition
+
+			})
+
 		})
 	})
+
 
 }
 
@@ -92,9 +131,9 @@ function afficherDetailDebat(obj){
 
 
 
-function afficherCommentaire(obj){
+function afficherCommentaire(obj, i){
 	return `
-	<div class="message" message-id="">
+	<div class="message" id="mess-${i}">
 
 		<div class="user">
 			<div class="pseudo">${obj.user}</div>
@@ -105,12 +144,12 @@ function afficherCommentaire(obj){
 		<div class="content">${obj.content}</div>
 		<div class="action">
 
-			<div class="dislike">
+			<div class="like">
 				<i class="material-icons">thumb_up</i>
 				<span>${obj.likers.length}</span>
 			</div>
 			
-			<div class="like">
+			<div class="dislike">
 				<i class="material-icons">thumb_down</i>
 				<span>${obj.unlikers.length}</span>
 			</div>
@@ -130,8 +169,8 @@ function afficherCommentaire(obj){
 
 
 function afficherListeCommentaires(data){
-	return data.contributions.reduce(function(acc, v){
-		acc += afficherCommentaire(v);
+	return data.contributions.reduce((acc, v, i) => {
+		acc += afficherCommentaire(v, i);
 		return acc;
 	}, "");
 }
@@ -139,10 +178,9 @@ function afficherListeCommentaires(data){
 
 
 
-// dummy load
+// todo: déplacer le request dans le domcontentloaded
 request('./json/Projet-2019-topics.json').then((data) => {
 	
-	// todo: rajouter un on dom content loaded
 
 	// affiche la liste des débats
 	afficherListeDebats(data);
@@ -152,17 +190,13 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	// recherche dans les débats
 	$("#recherche-text").addEventListener('keyup', (e) => {
 
-		// if(e.which === 13){
-			const query = $("#recherche-text").value;
-			const filteredData = data.filter(function(e){
-				if(e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1){
-					return true;
-				} else {
-					return false;
-				}
-			})
-			afficherListeDebats(filteredData);
-		// }
+		const query = $("#recherche-text").value;
+		
+		const filteredData = data.filter((e) => {
+			return (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1)
+		})
+
+		afficherListeDebats(filteredData);
 
 	})
 
@@ -171,6 +205,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	// clic sur trier
 	$("#filtrer").addEventListener('click', () => {
 		console.log("[FILTRER]")
+		// TODO: filtrage + html
 	})
 
 
@@ -181,6 +216,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 		if(e.which === 13){
 			const content = $("#ajouter-message").value
 			console.log(content)
+			// TODO: requete
 		}
 	})
 
@@ -190,12 +226,18 @@ request('./json/Projet-2019-topics.json').then((data) => {
 
 
 
-
-
+// ==============================
+// event listener
+// ==============================
 document.addEventListener('DOMContentLoaded', () => {
-	// event listener
+
+	// TRIER
+	$("#trier").addEventListener('click', () => {
+		console.log('[TRIER]')
+		// todo
+	})
+
 	// DARKEN
-	// clic sur darken
 	$("#darken").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
@@ -203,20 +245,20 @@ document.addEventListener('DOMContentLoaded', () => {
 	})
 
 
-	// CONNEXION
-	// clic sur connexion
+	// SAISIE CLEF API
+	// connexion
 	$("#connexion").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'block';
 		$("#darken").style.display = 'block';
 	})
 
-	// clic sur annuler
+	// annuler
 	$("#connexion-popup #annuler").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
 	})
 
-	// clic sur valider
+	// valider
 	$("#connexion-popup #valider").addEventListener('click', () => {
 
 		const api = $("#clef-api").value;
@@ -224,25 +266,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		if(api != ""){
 			$("#connexion-popup").style.display = 'none';
 			$("#darken").style.display = 'none';
+
+			// TODO: reorganiser le js pour prendre en compte clef api (classes ?)
 		}
 
 	})
 
 
-	// CREATION
-
-	// clic sur le fab
+	// CREATION D'UN DEBAT
+	// fab
 	$(".fab").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'block';
 		$("#darken").style.display = 'block';
 	})
 
-	// clic sur publier
+	// publier
 	$("#publier").addEventListener('click', () => {
-
+		// TODO: requête
 	})
 
-	// clic sur annuler
+	// annuler
 	$("#creation-debat #annuler").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'none';
 		$("#darken").style.display = 'none';
