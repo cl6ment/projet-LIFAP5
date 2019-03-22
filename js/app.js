@@ -20,20 +20,15 @@ async function request(url, typeRetour='json'){
 }
 
 
-
-
-
-
+// donne la date de dernière activité sur un débat
 function recupDateDerniereActivite(obj){
-
 	// overkill ???
-	const sorted = obj.sort((a, b) => ((a.date > b.date) ? -1 : 1))
-
-	return sorted[0].date;
+	// const sorted = obj.sort((a, b) => ((a.date > b.date) ? -1 : 1))
+	return obj[0].date;
 }
 
 
-
+// donne une date lisible par un humain
 function transformeDate(d){
 	d = new Date(d);
 	return ('0' + d.getDay()).slice(-2) + '/' + ('0' + d.getMonth()).slice(-2) + '/' + d.getFullYear();
@@ -42,8 +37,10 @@ function transformeDate(d){
 
 
 
-
-// prend un array et en extrait les infos pour créer du HTML
+// =============================
+// Génération de HTML
+// =============================
+// créé le HTML de la liste des sujet de débat
 function creerSujetHTML(obj){
 	return `
 	<div class="debat-overview" id="_${obj._id}">
@@ -59,64 +56,7 @@ function creerSujetHTML(obj){
 }
 
 
-
-
-function afficherListeDebats(listeObj){
-	const html = $("#liste-debat-overview .scrollbox")
-	
-
-
-	// insertion du html
-	html.innerHTML = listeObj.reduce((acc, v) => {
-		acc += creerSujetHTML(v)
-		return acc;
-	}, '');
-
-	// pose des ecouteurs d'event
-	listeObj.forEach((e) => {
-		$("#_"+e._id).addEventListener('click', () => {
-
-			$("#debat-detailview #sujet").innerHTML = afficherDetailDebat(e);
-			$("#messages").innerHTML = afficherListeCommentaires(e);
-
-
-			e.contributions.forEach((v, i) => {
-				$("#mess-"+i+" .dislike").addEventListener('click', (e) => {
-					console.log('[dislike]')
-					console.log($("#mess-"+i))
-					// todo : requete
-				})
-
-				$("#mess-"+i+" .like").addEventListener('click', (e) => {
-					console.log('[like]')
-					console.log($("#mess-"+i))
-					// todo: requete
-				})
-
-				$("#mess-"+i+" .supprimer").addEventListener('click', (e) => {
-					console.log('[supprimer]')
-					console.log($("#mess-"+i))
-					// todo : requete
-				})
-
-				$("#mess-"+i+" .modifier").addEventListener('click', (e) => {
-					console.log('[modifier]')
-					console.log($("#mess-"+i))
-					// todo: requete
-				})
-
-				// todo: ecouteur de suppression et d'édition
-
-			})
-
-		})
-	})
-
-
-}
-
-
-
+// créé le HTML du sujet d'un débat
 function afficherDetailDebat(obj){
 	return `
 	<h2>${obj.topic}</h2>
@@ -130,7 +70,7 @@ function afficherDetailDebat(obj){
 }
 
 
-
+// créé le HTML d'un commentaire lié à un débat
 function afficherCommentaire(obj, i){
 	return `
 	<div class="message" id="mess-${i}">
@@ -168,6 +108,12 @@ function afficherCommentaire(obj, i){
 
 
 
+
+// ================================
+// insertion de HTML, pose d'écouteur
+// ================================
+
+// affiche la liste des commentaires à un débat
 function afficherListeCommentaires(data){
 	return data.contributions.reduce((acc, v, i) => {
 		acc += afficherCommentaire(v, i);
@@ -177,10 +123,69 @@ function afficherListeCommentaires(data){
 
 
 
+// affiche la liste complète des sujet d'un débat
+function afficherListeDebats(listeObj){
+
+	// todo: lier cette fonction avec la fonction de tri
+
+	const html = $("#liste-debat-overview .scrollbox");
+
+	// insertion du html
+	html.innerHTML = listeObj.reduce((acc, v) => {
+		acc += creerSujetHTML(v)
+		return acc;
+	}, '');
+
+	// pose des ecouteurs d'event
+	listeObj.forEach((e) => {
+
+		// écouteur sur la liste des sujets
+		$("#_"+e._id).addEventListener('click', () => {
+
+			$("#debat-detailview #sujet").innerHTML = afficherDetailDebat(e);
+			$("#messages").innerHTML = afficherListeCommentaires(e);
+
+			// écouteurs sur un commentaire d'un débat
+			e.contributions.forEach((v, i) => {
+				$("#mess-"+i+" .dislike").addEventListener('click', (e) => {
+					console.log('[dislike]')
+					console.log($("#mess-"+i))
+					// todo : requete
+				})
+
+				$("#mess-"+i+" .like").addEventListener('click', (e) => {
+					console.log('[like]')
+					console.log($("#mess-"+i))
+					// todo: requete
+				})
+
+				$("#mess-"+i+" .supprimer").addEventListener('click', (e) => {
+					console.log('[supprimer]')
+					console.log($("#mess-"+i))
+					// todo : requete
+				})
+
+				$("#mess-"+i+" .modifier").addEventListener('click', (e) => {
+					console.log('[modifier]')
+					console.log($("#mess-"+i))
+					// todo: requete
+				})
+
+			})
+
+		})
+	})
+
+
+}
+
+
+
 
 // todo: déplacer le request dans le domcontentloaded
 request('./json/Projet-2019-topics.json').then((data) => {
 	
+
 
 	// affiche la liste des débats
 	afficherListeDebats(data);
@@ -191,21 +196,30 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	$("#recherche-text").addEventListener('keyup', (e) => {
 
 		const query = $("#recherche-text").value;
-		
-		const filteredData = data.filter((e) => {
-			return (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1)
-		})
-
+		const filteredData = data.filter((e) => (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1));
 		afficherListeDebats(filteredData);
 
 	})
 
 
 
-	// clic sur trier
-	$("#filtrer").addEventListener('click', () => {
-		console.log("[FILTRER]")
-		// TODO: filtrage + html
+	// TRIER
+	$("#trier select").addEventListener('change', (e) => {
+
+		const tri = $("#trier select").value;
+
+		if(tri === "date"){
+			const listeTriee = data.sort((a, b) => ((a.date > b.date) ? -1 : 1));
+			afficherListeDebats(listeTriee);
+		} else if(tri === "titre"){
+			const listeTriee = data.sort((a, b) => ((a.topic > b.topic) ? -1 : 1));
+			afficherListeDebats(listeTriee);
+		} else {
+			const listeTriee = data.sort((a, b) => ((a.contributions.length > b.contributions.length) ? -1 : 1));
+			afficherListeDebats(listeTriee);
+		}
+
+
 	})
 
 
@@ -226,16 +240,10 @@ request('./json/Projet-2019-topics.json').then((data) => {
 
 
 
-// ==============================
-// event listener
-// ==============================
+// =====================================
+// event listener sur contenu statique
+// =====================================
 document.addEventListener('DOMContentLoaded', () => {
-
-	// TRIER
-	$("#trier").addEventListener('click', () => {
-		console.log('[TRIER]')
-		// todo
-	})
 
 	// DARKEN
 	$("#darken").addEventListener('click', () => {
