@@ -24,7 +24,7 @@ async function request(url, typeRetour='json'){
 
 
 
-function recupDerniereActivite(obj){
+function recupDateDerniereActivite(obj){
 
 }
 
@@ -152,7 +152,7 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	// recherche dans les débats
 	$("#recherche-text").addEventListener('keyup', (e) => {
 
-		if(e.which === 13){
+		// if(e.which === 13){
 			const query = $("#recherche-text").value;
 			const filteredData = data.filter(function(e){
 				if(e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1){
@@ -162,12 +162,48 @@ request('./json/Projet-2019-topics.json').then((data) => {
 				}
 			})
 			afficherListeDebats(filteredData);
-		}
+		// }
 
 	})
 
 
 
+	// clic sur trier
+	$("#filtrer").addEventListener('click', () => {
+		console.log("[FILTRER]")
+	})
+
+
+
+
+	// ajout d'un message
+	$("#ajouter-message").addEventListener('keyup', function(e){
+		if(e.which === 13){
+			const content = $("#ajouter-message").value
+			console.log(content)
+		}
+	})
+
+
+
+})
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+	// event listener
+	// DARKEN
+	// clic sur darken
+	$("#darken").addEventListener('click', () => {
+		$("#connexion-popup").style.display = 'none';
+		$("#darken").style.display = 'none';
+		$("#creation-debat").style.display = 'none';
+	})
+
+
+	// CONNEXION
 	// clic sur connexion
 	$("#connexion").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'block';
@@ -179,14 +215,6 @@ request('./json/Projet-2019-topics.json').then((data) => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
 	})
-
-	// clic sur darken
-	$("#darken").addEventListener('click', () => {
-		$("#connexion-popup").style.display = 'none';
-		$("#darken").style.display = 'none';
-		$("#creation-debat").style.display = 'none';
-	})
-
 
 	// clic sur valider
 	$("#connexion-popup #valider").addEventListener('click', () => {
@@ -201,30 +229,23 @@ request('./json/Projet-2019-topics.json').then((data) => {
 	})
 
 
-	// clic sur trier
-	$("#filtrer").addEventListener('click', () => {
-		console.log("[FILTRER]")
-	})
-
+	// CREATION
 
 	// clic sur le fab
 	$(".fab").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'block';
 		$("#darken").style.display = 'block';
+	})
+
+	// clic sur publier
+	$("#publier").addEventListener('click', () => {
 
 	})
 
-
-
-
-	// ajout d'un message
-	$("#ajouter-message").addEventListener('keyup', function(e){
-
-		if(e.which === 13){
-			const content = $("#ajouter-message").value
-			console.log(content)
-		}
+	// clic sur annuler
+	$("#creation-debat #annuler").addEventListener('click', () => {
+		$("#creation-debat").style.display = 'none';
+		$("#darken").style.display = 'none';
 	})
+
 })
-
-

@@ -89,6 +89,41 @@ body{
 	transform: translateY(-50%);
 	display: none;
 }
+#creation-debat input, #creation-debat textarea{
+	width: calc(100% - 10px);
+	padding: 10px;
+	border: 1px solid var(--accent-blue);
+	margin: 0px;
+	font-size: 14px;
+	color: #424242;
+}
+#creation-debat input{
+	font-weight: 600;
+}
+#creation-debat textarea{
+	resize: none;
+	height: 250px;
+	border-top: none;
+}
+
+#creation-debat div{
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+#creation-debat #annuler, #creation-debat #publier{
+	display: block;
+	padding: 5px 20px;
+	margin: 0px 10px;
+	cursor: pointer;
+	font-size: 13px;
+	background-color: var(--accent-blue);
+	color: white;
+	border-radius: 4px;
+}
+#creation-debat #annuler{
+	background-color: #9E9E9E;
+}
 
 
 
@@ -115,9 +150,9 @@ header #recherche-text{
 	width: 250px;
 	padding: 5px;
 	text-align: center;
-	background-color: #F5F5F5;
-	border-left: 1px solid var(--accent-blue);
-	border-right: 1px solid var(--accent-blue);
+	background-color: #EEEEEE;
+	border-left: 2px solid var(--accent-blue);
+	border-right: 2px solid var(--accent-blue);
 	transition: all 300ms;
 }
 header #recherche-text:focus{
@@ -128,8 +163,8 @@ header #connexion{
 	border: 1px solid var(--accent-blue);
 	padding: 5px 20px;
 	border-radius: 25px;
+	cursor: pointer;
 	color: white;
-	text-decoration: none;
 	font-size: 14px;
 	margin-right: 25px;
 	transition: all 350ms;
@@ -155,6 +190,7 @@ header #connexion:hover{
 /*liste des débats*/
 #liste-debat-overview{
 	background-color: var(--bg-grey);
+	background-color: #EEEEEE;
 	width: 35vw;
 	min-width: 35vw;
 	max-width: 35vw;
@@ -187,13 +223,13 @@ header #connexion:hover{
 	position: absolute;
 	bottom: 15px;
 	left: 0px; right: 0px;
-	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
 
 
 .debat-overview{
-	border-top: 1px solid #b9bcc6;
+	/*border-top: 1px solid #b9bcc6;*/
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -201,11 +237,17 @@ header #connexion:hover{
 	padding-bottom: 25px;
 	padding-top: 25px;
 	cursor: pointer;
+
+	background-color: white;
+	width: 90%;
+	margin: 20px auto;
+	border-radius: 4px;
+
 }
 .debat-overview .sujet{
 	font-weight: 600;
-	font-size: 20px;
-	color: #424242;
+	font-size: 18px;
+	color: #616161;
 	transition: all 250ms;
 }
 .debat-overview:hover .sujet{
@@ -213,6 +255,7 @@ header #connexion:hover{
 }
 
 .debat-overview .derniere-contrib{
+	margin-top: 10px;
 	font-size: 13px;
 }
 .debat-overview .derniere-contrib i{
@@ -224,12 +267,13 @@ header #connexion:hover{
 	width: 40px;
 	min-height: 40px;
 	min-width: 40px;
-	background-color: #EEEEEE;
 	border-radius: 40px;
 	text-align: center;
 	line-height: 40px;
 	font-size: 14px;
-	border: 1px dotted var(--accent-blue);
+	border: 1px solid var(--accent-blue);
+
+	margin-left: 0px;
 }
 
 
@@ -359,6 +403,9 @@ header #connexion:hover{
 	background-color: #EF5350;
 	border: 1px solid #EF5350;
 }
+.action .supprimer:hover{
+	color: #EF5350;
+}
 .action .modifier{
 	transition: all 500ms;
 }
@@ -367,6 +414,7 @@ header #connexion:hover{
 	transform: translateY(0px);
 	visibility: visible;
 }
+
 
 .action div i{
 	font-size: 14px;
