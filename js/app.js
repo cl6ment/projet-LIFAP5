@@ -183,8 +183,15 @@ function afficherListeDebats(listeObj){
 
 
 // todo: déplacer le request dans le domcontentloaded
-request('./json/Projet-2019-topics.json').then((data) => {
+request('http://localhost/LIFAP5/PROJET/json/Projet-2019-topics.json').then((data) => {
 	
+	// state
+	let state = {
+		'listeDebats': data,
+		'api-key': 'a1b2c3d4e5f67890',
+		'tri': 'date',
+		'sujetCourant': ''
+	}
 
 
 	// affiche la liste des débats
