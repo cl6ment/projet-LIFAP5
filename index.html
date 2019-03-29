@@ -14,7 +14,6 @@
 	<!-- icons -->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
 	<!-- css -->
 	<link href="./css/index.css" rel="stylesheet">
 
@@ -36,7 +35,7 @@
 		<!-- topic, desc + (auteur, date, _id)-->
 
 		<input type="text" id="topic-debat" placeholder="Entrez le titre de votre nouveau débat">
-		<textarea placeholder="Description du débat"></textarea>
+		<textarea placeholder="Description du débat" id="content-debat"></textarea>
 		<div>
 			<div id="annuler">Annuler</div>
 			<div id="publier">Valider</div>
@@ -48,7 +47,10 @@
 
 	
 	<header>
-		<h1>Parlophone</h1>
+		<div>
+			<h1>Parlophone</h1>
+			<img src="./img/parlophone.png" alt="parlophone logo" id="logo">
+		</div>	
 		<input type="text" id="recherche-text" placeholder="Cherchez dans nos débats">
 		<div id="connexion">Connexion</div>
 	</header>
@@ -62,22 +64,16 @@
 			<div id="trier">
 				<select>
 					<option value="date">date</option>
-					<option value="titre">titre</option>
+					<option value="topic">topic</option>
 					<option value="contrib">contribution</option>
+				</select>
+				<select>
+					<option value="croissant">croissant</option>
+					<option value="decroissant">decroissant</option>
 				</select>
 			</div>
 			
-			<div class="scrollbox">
-
-				<div class="debat-overview">
-					<div>
-						<div class="sujet">Lorem ipsum</div>
-						<div class="derniere-contrib">il y a 5 jours</div>
-					</div>
-					<div class="nb-contrib">35</div>
-				</div>
-				
-			</div>
+			<div class="scrollbox"></div>
 
 			<div class="fab">
 				<i class="material-icons">add</i>

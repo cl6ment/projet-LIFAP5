@@ -143,6 +143,12 @@ header h1{
 	color: var(--accent-blue);
 	margin-left: 25px;
 	cursor: default;
+	display: inline-block;
+}
+header #logo{
+	width: 15px;
+	margin-left: 10px;
+	display: inline-block;
 }
 header #recherche-text{
 	border: none;
@@ -198,19 +204,25 @@ header #connexion:hover{
 	height: calc(100vh - 70px);
 	position: relative;
 	overflow-y: hidden;
+	transition: all 250ms;
 }
 
 #liste-debat-overview .scrollbox{
 	max-height: calc(100vh - 125px);
 	overflow-y: auto;
+	scrollbar-width: none;
+}
+#liste-debat-overview .scrollbox .debat-overview:nth-last-of-type(1){
+	margin-bottom: 95px;
 }
 
 #liste-debat-overview #trier{
 	padding: 2px 30px;
 	margin-top: 15px;
-	cursor: pointer;
+	cursor: default;
 	color: #b9bcc6;
 	font-size: 13px;
+	display: flex;
 }
 #liste-debat-overview #trier select{
 	margin-right: 5px;
@@ -220,6 +232,7 @@ header #connexion:hover{
 	outline: none;
 	border-radius: 4px;
 	padding: 10px;
+	cursor: pointer;
 }
 
 #liste-debat-overview .fab{
@@ -233,7 +246,6 @@ header #connexion:hover{
 
 
 .debat-overview{
-	/*border-top: 1px solid #b9bcc6;*/
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -246,7 +258,6 @@ header #connexion:hover{
 	width: 90%;
 	margin: 20px auto;
 	border-radius: 4px;
-
 }
 .debat-overview .sujet{
 	font-weight: 600;
@@ -293,6 +304,8 @@ header #connexion:hover{
 #debat-detailview .scrollbox{
 	overflow-y: auto;
 	max-height: calc(100vh - 145px);
+	scrollbar-width: none;
+
 }
 
 /*sujet d'un débat*/
@@ -323,11 +336,6 @@ header #connexion:hover{
 }
 
 /*vue messages*/
-/*todo: améliorer quand il y a bcp de messages (scrollbox)*/
-#messages{
-/*	max-height: 380px; 
-	overflow-y: auto;
-*/}
 .message{
 	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
 	padding: 10px;
@@ -396,14 +404,15 @@ header #connexion:hover{
 	color: var(--accent-blue);
 }
 /*effet d'apparition*/
-.action .dislike{
+.action .like{
 	transition: all 200ms;
 }
-.action .like{
-	transition: all 300ms;
+.action .dislike{
+	transition: all 320ms;
 }
+
 .action .supprimer{
-	transition: all 400ms;
+	transition: all 440ms;
 	background-color: #EF5350;
 	border: 1px solid #EF5350;
 }
@@ -411,7 +420,7 @@ header #connexion:hover{
 	color: #EF5350;
 }
 .action .modifier{
-	transition: all 500ms;
+	transition: all 560ms;
 }
 
 .message:hover .action div{
@@ -441,4 +450,11 @@ header #connexion:hover{
 	width: 100%;
 	border: none;
 	padding: 15px 15px;
+}
+
+
+@media all and (max-width: 1100px){
+	#liste-debat-overview{
+		margin-left: -800px;
+	}
 }
