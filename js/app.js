@@ -1,4 +1,4 @@
-/*jshint esversion: 8 */
+/*jshint esversion: 9 */
 
 // selecteur universel (juste un raccourcis pour sélectionner des elts)
 function $(s){
@@ -123,7 +123,7 @@ function afficherDetailDebat(debat){
 
 // créé le HTML d'un commentaire lié à un débat
 function afficherCommentaire(state, comm, i){
-	
+
 	const modHTML = (comm.user === state.user) ? 
 	`<div class="supprimer">
 		<i class="material-icons">delete</i>
@@ -225,9 +225,7 @@ function afficherListeDebats(state){
 	
 	triDebats(state, state.tri);
 
-	// todo: lier cette fonction avec la fonction de tri
 	const html = $("#liste-debat-overview .scrollbox");
-
 
 	// insertion du html des sujets des débats
 	html.innerHTML = state.listeDebats.reduce((acc, sujetDebat) => {
@@ -248,7 +246,20 @@ function afficherListeDebats(state){
 
 }
 
-// state
+
+
+// todo: remplacer le let state par la fonction state
+function State(users = [], topics = [], filters = [], sort = "NONE"){
+	this.users   = users;
+	this.topics  = topics.map(x => ({...x, date : new Date(x.date)})); // spread op
+	this.filters = filters;
+	this.sort    = sort;
+	// api key, user ?
+}
+// console.log(State.users)
+
+
+// variable state globale
 let state = {
 	'listeDebats': [],
 	'api-key': 'a1b2c3d4e5f67890',
@@ -258,45 +269,14 @@ let state = {
 };
 
 
-// todo: déplacer le request dans le domcontentloaded
-request('http://localhost/LIFAP5/PROJET/json/Projet-2019-topics.json').then((data) => {
+// chargement initial des données
+request('http://localhost/LIFAP5/PROJET/json/Projet-2019-topics.json')
+.then((data) => {
 	state.listeDebats = data;
-
-	// affiche la liste des débats
 	afficherListeDebats(state);
-
-	// recherche dans les débats
-	$("#recherche-text").addEventListener('keyup', (e) => {
-		const query = $("#recherche-text").value;
-		const listeDebats = state.listeDebats;
-		state.listeDebats = state.listeDebats.filter((e) => (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1));
-		afficherListeDebats(state);
-		state.listeDebats = listeDebats;
-	});
-
-
-
-	// TRIER
-	$("#trier select").addEventListener('change', (e) => {
-		const tri = $("#trier select").value;
-		state.tri = tri;
-		afficherListeDebats(state);
-	});
-
-
-
-
-	// ajout d'un message
-	$("#ajouter-message").addEventListener('keyup', function(e){
-		if(e.which === 13){
-			const content = $("#ajouter-message").value;
-			if(content !== ""){
-				console.log(content);
-				// TODO: requete	
-			}
-		}
-	});
-
+})
+.catch((e) => {
+	console.log("Il y a eu une erreur !", e);
 });
 
 
@@ -334,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			$("#connexion-popup").style.display = 'none';
 			$("#darken").style.display = 'none';
 			state["api-key"] = key;
-			// TODO: reorganiser le js pour prendre en compte clef api (classes ?)
 		}
 	});
 
@@ -361,6 +340,37 @@ document.addEventListener('DOMContentLoaded', () => {
 	$("#creation-debat #annuler").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'none';
 		$("#darken").style.display = 'none';
+	});
+
+
+	// CONTRIBUTION A UN DEBAT
+	$("#ajouter-message").addEventListener('keyup', function(e){
+		if(e.which === 13){
+			const content = $("#ajouter-message").value;
+			if(content !== ""){
+				console.log(content);
+				// TODO: requete	
+			}
+		}
+	});
+
+
+	// recherche dans les débats
+	$("#recherche-text").addEventListener('keyup', (e) => {
+		const query = $("#recherche-text").value;
+		const listeDebats = state.listeDebats;
+		state.listeDebats = state.listeDebats.filter((e) => (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1));
+		afficherListeDebats(state);
+		state.listeDebats = listeDebats;
+	});
+
+
+
+	// TRIER
+	$("#trier select").addEventListener('change', (e) => {
+		const tri = $("#trier select").value;
+		state.tri = tri;
+		afficherListeDebats(state);
 	});
 
 });
