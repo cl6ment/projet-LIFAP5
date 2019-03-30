@@ -23,7 +23,7 @@ body{
 
 #darken{
 	position: fixed;
-	z-index: 1000;
+	z-index: 1500;
 	background-color: rgba(0, 0, 0, 0.5);
 	width: 100vw;
 	height: 100vh;
@@ -145,11 +145,18 @@ header h1{
 	cursor: default;
 	display: inline-block;
 }
-header #logo{
-	width: 15px;
-	margin-left: 10px;
-	display: inline-block;
+header #mobile-menu{
+	width: 60px;
+	height: 60px;
+	display: none;
+	cursor: pointer;
+	text-align: center;
 }
+header #mobile-menu i{
+	line-height: 60px;
+	color: var(--accent-blue);
+}
+
 header #recherche-text{
 	border: none;
 	margin: 0px auto;
@@ -185,26 +192,20 @@ header #connexion:hover{
 
 
 
-/*wrap*/
-#wrap{
-	display: flex;
-}
-
-
-
-
 /*liste des débats*/
 #liste-debat-overview{
 	background-color: var(--bg-grey);
 	background-color: #EEEEEE;
-	width: 35vw;
-	min-width: 35vw;
-	max-width: 35vw;
-	max-width: 800px;
+	width: 500px;
 	height: calc(100vh - 70px);
 	position: relative;
+	z-index: 1000;
 	overflow-y: hidden;
 	transition: all 250ms;
+	position: fixed;
+	top: 70px;
+	bottom: 0px;
+	left: 0px;
 }
 
 #liste-debat-overview .scrollbox{
@@ -298,7 +299,8 @@ header #connexion:hover{
 	padding: 25px;
 	padding-right: 0px;
 	position: relative;
-	width: calc(100vw - 35vw);
+	height: calc(100vh - 120px);
+	margin-left: 500px;
 	overflow-y: auto;
 }
 #debat-detailview .scrollbox{
@@ -453,8 +455,26 @@ header #connexion:hover{
 }
 
 
-@media all and (max-width: 1100px){
-	#liste-debat-overview{
-		margin-left: -800px;
+@media all and (max-width: 800px){
+	header h1{
+		display: none;
 	}
+	header #connexion{
+		display: none;
+	}
+	header #mobile-menu{
+		display: block;
+	}
+	#liste-debat-overview{
+		width: 100vw;
+		left: -100vw;
+	}
+	#debat-detailview{
+		margin-left: 0px;
+	}
+
+}
+
+.liste-debat-overview-visible{
+	left: 300px;
 }

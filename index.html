@@ -6,10 +6,14 @@
 	<title id="titre">Parlophone</title>
 	
 	<!-- javascript -->
+	<script src="./js/helper.js" type="text/javascript"></script> 
+	<script src="./js/generation.js" type="text/javascript"></script> 
+	<script src="./js/rendu.js" type="text/javascript"></script> 
+	<script src="./js/event.js" type="text/javascript"></script> 
 	<script src="./js/app.js" type="text/javascript"></script> 
 
 	<!-- polices -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
 	
 	<!-- icons -->
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -32,74 +36,70 @@
 
 
 	<div id="creation-debat">
-		<!-- topic, desc + (auteur, date, _id)-->
-
 		<input type="text" id="topic-debat" placeholder="Entrez le titre de votre nouveau débat">
 		<textarea placeholder="Description du débat" id="content-debat"></textarea>
 		<div>
 			<div id="annuler">Annuler</div>
 			<div id="publier">Valider</div>
 		</div>
-
 	</div>
 
 
 
 	
 	<header>
-		<div>
-			<h1>Parlophone</h1>
-			<img src="./img/parlophone.png" alt="parlophone logo" id="logo">
-		</div>	
+		<h1>Parlophone</h1>
+		<div id="mobile-menu">
+			<i class="material-icons">menu</i>
+		</div>
 		<input type="text" id="recherche-text" placeholder="Cherchez dans nos débats">
 		<div id="connexion">Connexion</div>
+		<!-- <i class="material-icons">account_circle</i> -->
 	</header>
 
 
 
-	<div id="wrap">
 
-		<nav id="liste-debat-overview">
+	<nav id="liste-debat-overview">
 
-			<div id="trier">
-				<select>
-					<option value="date">date</option>
-					<option value="topic">topic</option>
-					<option value="contrib">contribution</option>
-				</select>
-				<select>
-					<option value="croissant">croissant</option>
-					<option value="decroissant">decroissant</option>
-				</select>
-			</div>
-			
-			<div class="scrollbox"></div>
-
-			<div class="fab">
-				<i class="material-icons">add</i>
-			</div>
-		</nav>
-
-
-		<div id="debat-detailview">
-
-			<div class="scrollbox">
-				<div id="action-debat">
-					<!-- todo: ajouter des actions quand on est propriétaire du débat -->
-				</div>
-				
-				<div id="sujet">
-					<h1>Cela manque de débat ici !</h1>
-				</div>
-
-				<div id="messages"></div>
-			</div>
-
-			<input type="text" id="ajouter-message" placeholder="Joignez votre voix au débat ! (entrée pour envoyer)">
-
+		<div id="trier">
+			<select id="trier-value">
+				<option value="date">date</option>
+				<option value="topic">topic</option>
+				<option value="nbcontrib">nombre de contribution</option>
+				<option value="lastcontrib">dernière contribution</option>
+			</select>
+			<select id="trier-order">
+				<option value="desc">decroissant</option>
+				<option value="asc">croissant</option>
+			</select>
 		</div>
 		
-	</div>
+		<div class="scrollbox"></div>
 
+		<div class="fab">
+			<i class="material-icons">add</i>
+		</div>
+	</nav>
+
+
+	<div id="debat-detailview">
+
+		<div class="scrollbox">
+			<div id="action-debat">
+				<!-- todo: ajouter des actions quand on est propriétaire du débat -->
+			</div>
+			
+			<div id="sujet">
+				<h1>Cela manque de débat ici !</h1>
+			</div>
+
+			<div id="messages"></div>
+		</div>
+
+		<input type="text" id="ajouter-message" placeholder="Joignez votre voix au débat ! (entrée pour envoyer)">
+
+	</div>
+	
 </body>
 </html>
