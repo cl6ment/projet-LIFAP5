@@ -19,22 +19,38 @@ function $(s){
 /**
  * @desc
  * @param {*} url 
- * @param {*} typeRetour 
  * @return 
  */
-async function request(url, typeRetour='json'){
+async function request(url, state, auth=true){
+    let header;
+    
+    if(auth){
+        header = new Headers({
+            'x-api-key':state.api_key_value,
+            'Content-Type':'application/json'
+        });
+    } else {
+        header = new Headers({
+            'Content-Type':'application/json'
+        });
+    }
 
-	const response = await fetch(url);
+    const response = await fetch(server + url, { method: "GET", headers: header});
+    
 	if(response.status < 400){
-		if(typeRetour == 'json'){
-			return await response.json();
-		} else if('text') {
-			return await response.text();
-		}
+		return await response.json();
 	} else {
 		throw `[${response.status}] status code`;
-	} 
+	}
 
+}
+
+
+function get(url, state){
+    console.log(state.api_key_value);
+    request(url, state).then(function(data){
+        console.log(data);
+    });
 }
 
 

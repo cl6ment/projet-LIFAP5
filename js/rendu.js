@@ -5,10 +5,6 @@
 // rendu du HTML, pose d'écouteur
 // =====================================================
 
-
-
-
-
 /**
  * @desc Affiche un débat et la liste de ses contribution
  * @param {*} debat 

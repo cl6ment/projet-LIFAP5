@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if(key !== ""){
 			$("#connexion-popup").style.display = 'none';
 			$("#darken").style.display = 'none';
-			State.key = key;
+			State.api_key_value = key;
 		}
 	});
 
@@ -62,8 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		const content = $("#content-debat").value;
 
 		if(topic !== "" && content !== ""){
-            console.log(topic, content);
-            // TODO: requête PUT vers le serveur
+			console.log(topic, content);
+			
+			$("#creation-debat").style.display = 'none';
+			$("#darken").style.display = 'none';
+
+			$("#topic-debat").value = "";
+			$("#content-debat").value = "";
+	
+      // TODO: requête PUT vers le serveur (+ déplacer les deux lignes dans le .then)
 		}
 	});
 
@@ -71,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	$("#creation-debat #annuler").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'none';
 		$("#darken").style.display = 'none';
+		$("#topic-debat").value = "";
+		$("#content-debat").value = "";
 	});
 
 
@@ -80,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			const content = $("#ajouter-message").value;
 			if(content !== ""){
 				console.log(content);
+				$("#ajouter-message").value = "";
+
 				// TODO: requete PUT vers le serveur
 			}
 		}

@@ -54,9 +54,9 @@ function genererDetailDebat(debat){
  * @param {*} contrib Un objet js contenant les informations sur la contribution
  * @param {*} i L'index de la contribution dans la liste des contributions
  */
-function genererContribution(state, contrib, i){
+function genererContribution(State, contrib, i){
 
-	const allowModification = (contrib.user === state.user) ? 
+	const allowModification = (contrib.user === State.user) ? 
 	`<div class="supprimer">
 		<i class="material-icons">delete</i>
 	</div>

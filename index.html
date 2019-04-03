@@ -63,16 +63,23 @@
 	<nav id="liste-debat-overview">
 
 		<div id="trier">
-			<select id="trier-value">
-				<option value="date">date</option>
-				<option value="topic">topic</option>
-				<option value="nbcontrib">nombre de contribution</option>
-				<option value="lastcontrib">dernière contribution</option>
-			</select>
-			<select id="trier-order">
-				<option value="desc">decroissant</option>
-				<option value="asc">croissant</option>
-			</select>
+			<div id="trier-value-wrap">
+				<select id="trier-value">
+					<option value="date">date</option>
+					<option value="topic">topic</option>
+					<option value="nbcontrib">nombre de contribution</option>
+					<option value="lastcontrib">dernière contribution</option>
+				</select>
+				<i class= "material-icons">arrow_drop_down</i>
+			</div>
+			
+			<div id="trier-order-wrap">
+				<select id="trier-order">
+					<option value="desc">decroissant</option>
+					<option value="asc">croissant</option>
+				</select>
+				<i class= "material-icons">arrow_drop_down</i>
+			</div>
 		</div>
 		
 		<div class="scrollbox"></div>
@@ -88,6 +95,9 @@
 		<div class="scrollbox">
 			<div id="action-debat">
 				<!-- todo: ajouter des actions quand on est propriétaire du débat -->
+
+				<i class="material-icons">delete</i>
+				<i class="material-icons">lock</i>
 			</div>
 			
 			<div id="sujet">
