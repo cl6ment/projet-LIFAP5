@@ -12,8 +12,8 @@
  * @return {string} une string contenant du HTML
  */
 function genererTopicOverview(debat){
-	const color = (debat.open === "false")?"#F44336":"#66BB6A";
-	
+	const color = (debat.open === false)?"#F44336":"#66BB6A";
+
 	return `
 	<div class="debat-overview" id="_${debat._id}">
 		<div>
@@ -26,6 +26,9 @@ function genererTopicOverview(debat){
 		<div class="nb-contrib" style="border-color: ${color}">${debat.contributions.length}</div>
 	</div>`;
 }
+
+
+
 
 
 /**
@@ -54,9 +57,9 @@ function genererDetailDebat(debat){
  * @param {*} contrib Un objet js contenant les informations sur la contribution
  * @param {*} i L'index de la contribution dans la liste des contributions
  */
-function genererContribution(State, contrib, i){
+function genererContribution(state, contrib, i){
 
-	const allowModification = (contrib.user === State.user) ? 
+	const allowModification = (contrib.user === state.user.login) ? 
 	`<div class="supprimer">
 		<i class="material-icons">delete</i>
 	</div>
@@ -66,7 +69,7 @@ function genererContribution(State, contrib, i){
 	</div>` : ``;
 
 	return `
-	<div class="message" id="mess-${i}">
+	<div class="message" id="post-${i}" postID="${contrib._id}">
 
 		<div class="user">
 			<div class="pseudo">${contrib.user}</div>
@@ -84,7 +87,7 @@ function genererContribution(State, contrib, i){
 			
 			<div class="dislike">
 				<i class="material-icons">thumb_down</i>
-				<span>${contrib.unlikers.length}</span>
+				<span>${contrib.dislikers.length}</span>
 			</div>
 			${allowModification}
 		</div>			
@@ -99,9 +102,9 @@ function genererContribution(State, contrib, i){
  * @param {*} debat Le débat dont on veut afficher les contributions
  * @return Une string contenant du HTML
  */
-function genererListeContributions(State, debat){
+function genererListeContributions(state, debat){
 	return debat.contributions.reduce((acc, v, i) => {
-		acc += genererContribution(State, v, i);
+		acc += genererContribution(state, v, i);
 		return acc;
 	}, "");
 }

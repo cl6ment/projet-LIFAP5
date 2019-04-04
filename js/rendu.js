@@ -9,43 +9,78 @@
  * @desc Affiche un débat et la liste de ses contribution
  * @param {*} debat 
  */
-function afficherDebat(debat){
+function afficherDebat(state, debat){
+
+	const lock = $("#lock-debat i");
+	const remove = $("#delete-debat i");
+	const ajouter = $("#edit-debat i");
+
 	// afficher le débat & ses contributions sur le panneau de droite
 	$("#debat-detailview #sujet").innerHTML = genererDetailDebat(debat);
-	$("#messages").innerHTML = genererListeContributions(State, debat);
+	$("#messages").innerHTML = genererListeContributions(state, debat);
 
 	// désactiver l'ajout de contributions sur les sujet clos
-	if(debat.open === "false"){
-		$("#ajouter-message").disabled = true;
+	if(debat.open === false){
+		ajouter.disabled = true;
+		lock.style.backgroundColor = "#EF5350";
 	} else {
-		$("#ajouter-message").disabled = false;
+		ajouter.disabled = false;
+		lock.style.backgroundColor = "#81C784";
 	}
+
+	if(debat.user !== state.user.login){
+		lock.style.cursor = "not-allowed";
+		remove.style.cursor = "not-allowed";
+		ajouter.style.cursor = "not-allowed";
+	} else {
+		lock.style.cursor = "pointer";
+		remove.style.cursor = "pointer";
+		ajouter.style.cursor = "pointer";
+	}
+
+
+	
 
 	// écouteurs sur les contributions d'un débat
 	debat.contributions.forEach((v, i) => {
-		$("#mess-"+i+" .dislike").addEventListener('click', (e) => {
-			console.log('[dislike]');
-			console.log($("#mess-"+i));
-			// todo : requete vers le serveur, probablement un put pour le dislike
+		$("#post-"+i+" .dislike").addEventListener('click', (e) => {
+			const postID = $("#post-"+i).getAttribute('postID');
+
+			request("topic/" + s.currentTopic + "/post/" + postID + "/dislike", s, "PUT", true)
+			.then((response) => {
+				console.log(response); // todo
+				getData(s);
+			});
+
 		});
 
-		$("#mess-"+i+" .like").addEventListener('click', (e) => {
-			console.log('[like]');
-			console.log($("#mess-"+i));
-			// todo : requete vers le serveur, probablement un put pour le like
+		$("#post-"+i+" .like").addEventListener('click', (e) => {
+			const postID = $("#post-"+i).getAttribute('postID');
+
+			request("topic/" + s.currentTopic + "/post/" + postID + "/like", s, "PUT", true)
+			.then((response) => {
+				console.log(response); // todo
+				getData(s);
+			});
+
 		});
 
 		// désactive les event listener pour les commentaires autre que les siens
-		if($("#mess-"+i+" .supprimer") !== null){
-			$("#mess-"+i+" .supprimer").addEventListener('click', (e) => {
-				console.log('[supprimer]');
-				console.log($("#mess-"+i));
-				// todo : requete vers le serveur pour supprimer la contrib (delete ?)
+		if($("#post-"+i+" .supprimer") !== null){
+			$("#post-"+i+" .supprimer").addEventListener('click', (e) => {
+				const postID = $("#post-"+i).getAttribute('postID');
+
+				request("topic/" + s.currentTopic + "/post/" + postID + "/delete", s, "DELETE", true)
+				.then((response) => {
+					console.log(response); // todo
+					getData(s);
+				});
+
 			});
 	
-			$("#mess-"+i+" .modifier").addEventListener('click', (e) => {
+			$("#post-"+i+" .modifier").addEventListener('click', (e) => {
 				console.log('[modifier]');
-				console.log($("#mess-"+i));
+				console.log($("#post-"+i).getAttribute('postID'));
 				// todo: faire apparaitre une popup pour la modification ?
 				// todo: requete vers le serveur pour modifier la contrib
 			});
@@ -56,24 +91,29 @@ function afficherDebat(debat){
 
 
 // affiche la liste complète des sujet d'un débat
-function afficherListeTopic(State){
-	
-	triDebats(State);
+function afficherListeTopic(state){	
+	triDebats(state);
 
 	const html = $("#liste-debat-overview .scrollbox");
 
-    // todo: générer liste topic ???
-	html.innerHTML = State.topics.reduce((acc, sujetDebat) => {
+	html.innerHTML = state.topics.reduce((acc, sujetDebat) => {
 		acc += genererTopicOverview(sujetDebat);
 		return acc;
 	}, "");
 
+
+	// afficher le premier débat
+	state.currentTopic = state.topics[state.currentTopicID]._id;
+	afficherDebat(state, state.topics[state.currentTopicID]);
+
+
     // pose des écouteurs sur les topics
-	State.topics.forEach((debat) => {
+	state.topics.forEach((debat, i) => {
 		// au clic, on affiche le débat
 		$("#_"+debat._id).addEventListener('click', () => {
-			afficherDebat(debat);
-			State.currentTopic = debat._id;
+			state.currentTopic = debat._id;
+			state.currentTopicID = i;
+			afficherDebat(state, debat);
 		});
 	});
 

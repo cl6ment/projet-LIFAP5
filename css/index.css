@@ -226,7 +226,7 @@ header #connexion:hover{
 	font-size: 13px;
 	display: flex;
 }
-#liste-debat-overview #trier select{
+select{
 	appearance: none;
 	-moz-apperance: none;
 	-webkit-appearance: none;
@@ -332,13 +332,15 @@ header #connexion:hover{
 	width: calc(100% - 20px);
 	border-radius: 5px;
 	margin: 10px auto;
-	/*background-color: var(--bg-grey);*/
 	background-color: var(--bg-grey);
 	height: 70px;
-	color: #424242;
+	color:  white;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	align-items: center;
+}
+#action-debat div{
+	display: flex;
 }
 #action-debat i{
 	height: 40px;
@@ -346,7 +348,7 @@ header #connexion:hover{
 	border-radius: 40px;
 	text-align: center;
 	line-height: 40px;
-	background-color: #EEEEEE;
+	background-color: #DDDDDD;
 	cursor: pointer;
 	font-size: 15px;
 	margin: 0px 10px;

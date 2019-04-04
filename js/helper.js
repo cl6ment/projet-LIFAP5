@@ -21,21 +21,26 @@ function $(s){
  * @param {*} url 
  * @return 
  */
-async function request(url, state, auth=true){
-    let header;
+async function request(path, state, method="GET", auth=false, p={}){
+    
+    let header  = new Headers({
+        'Content-Type':'application/json'
+    });
     
     if(auth){
         header = new Headers({
-            'x-api-key':state.api_key_value,
-            'Content-Type':'application/json'
-        });
-    } else {
-        header = new Headers({
+            'x-api-key': state.api_key_value,
             'Content-Type':'application/json'
         });
     }
 
-    const response = await fetch(server + url, { method: "GET", headers: header});
+    let payload = {method: method, headers: header};
+    
+    if(Object.values(p).length != 0)
+        payload.body = JSON.stringify(p);      
+    
+    const url = server + path;
+    const response = await fetch(url, payload);
     
 	if(response.status < 400){
 		return await response.json();
@@ -44,16 +49,6 @@ async function request(url, state, auth=true){
 	}
 
 }
-
-
-function get(url, state){
-    console.log(state.api_key_value);
-    request(url, state).then(function(data){
-        console.log(data);
-    });
-}
-
-
 
 
 
@@ -123,7 +118,19 @@ function compareDate(da, db){
             } else if(da.getDate() < db.getDate()){
                 return -1;
             } else {
-                return 1; // your pick
+                if(da.getHours() > db.getHours()){
+                    return 1;
+                } else if(da.getHours() < db.getHours()){
+                    return -1;
+                } else {
+                    if(da.getMinutes() > db.getMinutes()){
+                        return 1;
+                    } else if(da.getMinutes() < db.getMinutes()){
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                }
             }
         }
     }
@@ -136,51 +143,50 @@ function compareDate(da, db){
 
 /**
  * @desc
- * @param {*} State 
+ * @param {*} state 
  * @return 
  */
-function triDebats(State){
-
+function triDebats(state){
     // tri par date
-	if(State.sort === "date"){
+	if(state.sort === "date"){
         let sort = (a,b) => compareDate(b,a);
         
-        if(State.order === "asc")
+        if(state.order === "asc")
             sort = (a,b) => compareDate(a,b);
 
-		State.topics = State.topics.sort((a, b) => {
+		state.topics = state.topics.sort((a, b) => {
             return sort(a.date, b.date);
         });
     }
     
     // tri par topic (le titre du débat)
-    if(State.sort === "topic"){
+    if(state.sort === "topic"){
         let sort = (a, b) => ((a.topic > b.topic) ? -1 : 1);
 
-        if(State.order === "asc")
+        if(state.order === "asc")
             sort = (a, b) => ((a.topic > b.topic) ? 1 : -1);
         
-        State.topics = State.topics.sort(sort);
+        state.topics = state.topics.sort(sort);
     }
     
     // tri par nombre de contribution
-    if(State.sort === "nbcontrib") {
+    if(state.sort === "nbcontrib") {
         let sort = (a, b) => ((a.contributions.length > b.contributions.length) ? -1 : 1);
         
-        if(State.order === "asc")
+        if(state.order === "asc")
             sort = (a, b) => ((a.contributions.length > b.contributions.length) ? 1 : -1);
         
-        State.topics = State.topics.sort(sort);
+        state.topics = state.topics.sort(sort);
     }
     
     // tri par date de dernière contribution
-    if(State.sort === "lastcontrib"){
+    if(state.sort === "lastcontrib"){
         let sort = (a,b) => compareDate(b,a);
 
-        if(State.order === "asc")
+        if(state.order === "asc")
             sort = (a,b) => compareDate(a,b);
         
-		State.topics = State.topics.sort((a, b) => {
+		state.topics = state.topics.sort((a, b) => {
             a = recupDateDerniereActivite(a.contributions);
             b = recupDateDerniereActivite(b.contributions);
             return sort(a,b);

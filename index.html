@@ -52,7 +52,7 @@
 		<div id="mobile-menu">
 			<i class="material-icons">menu</i>
 		</div>
-		<input type="text" id="recherche-text" placeholder="Cherchez dans nos débats">
+		<input type="text" id="recherche-text" placeholder="Cherchez dans nos débats...">
 		<div id="connexion">Connexion</div>
 		<!-- <i class="material-icons">account_circle</i> -->
 	</header>
@@ -65,18 +65,18 @@
 		<div id="trier">
 			<div id="trier-value-wrap">
 				<select id="trier-value">
-					<option value="date">date</option>
-					<option value="topic">topic</option>
-					<option value="nbcontrib">nombre de contribution</option>
-					<option value="lastcontrib">dernière contribution</option>
+					<option value="date">Date</option>
+					<option value="topic">Topic</option>
+					<option value="nbcontrib">Nombre de contributions</option>
+					<option value="lastcontrib">Dernière contribution</option>
 				</select>
 				<i class= "material-icons">arrow_drop_down</i>
 			</div>
 			
 			<div id="trier-order-wrap">
 				<select id="trier-order">
-					<option value="desc">decroissant</option>
-					<option value="asc">croissant</option>
+					<option value="desc">Décroissant</option>
+					<option value="asc">Croissant</option>
 				</select>
 				<i class= "material-icons">arrow_drop_down</i>
 			</div>
@@ -94,10 +94,41 @@
 
 		<div class="scrollbox">
 			<div id="action-debat">
-				<!-- todo: ajouter des actions quand on est propriétaire du débat -->
 
-				<i class="material-icons">delete</i>
-				<i class="material-icons">lock</i>
+				<div>
+					<div id="sort-debat-wrap">
+						<select id="sort-debat">
+							<option value="date">Nombre de likes</option>
+							<option value="date">Nombre de dislikes</option>
+							<option value="topic">Date</option>
+							<option value="nbcontrib">Nom d'auteur</option>
+						</select>
+					</div>
+	
+					<div id="sort-debat-order-wrap">
+						<select id="sort-debat-order">
+							<option value="desc">Décroissant</option>
+							<option value="asc">Croissant</option>
+						</select>
+					</div>
+				</div>
+				
+
+
+				<div>
+					<div id="edit-debat">
+						<i class="material-icons">create</i>
+					</div>
+
+					<div id="delete-debat">
+						<i class="material-icons">delete</i>
+					</div>
+
+					<div id="lock-debat">
+						<i class="material-icons">lock</i>
+					</div>
+				</div>
+				
 			</div>
 			
 			<div id="sujet">
@@ -107,7 +138,7 @@
 			<div id="messages"></div>
 		</div>
 
-		<input type="text" id="ajouter-message" placeholder="Joignez votre voix au débat ! (entrée pour envoyer)">
+		<input type="text" id="ajouter-message" placeholder="Qu'en pensez vous ?">
 
 	</div>
 	

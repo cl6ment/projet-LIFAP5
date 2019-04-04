@@ -4,7 +4,7 @@
 // =====================================
 // event listener sur contenu statique
 // =====================================
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
 
 	// MENU HAMBURGER
 	$("#mobile-menu").addEventListener('click', () => {
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if(key !== ""){
 			$("#connexion-popup").style.display = 'none';
 			$("#darken").style.display = 'none';
-			State.api_key_value = key;
+			s.api_key_value = key;
 		}
 	});
 
@@ -62,15 +62,24 @@ document.addEventListener('DOMContentLoaded', () => {
 		const content = $("#content-debat").value;
 
 		if(topic !== "" && content !== ""){
-			console.log(topic, content);
 			
-			$("#creation-debat").style.display = 'none';
-			$("#darken").style.display = 'none';
+			request('topic/create', s, "POST", true, {'topic': topic, 'desc':content, 'open':true})
+			.then((response) => {
+				if(response.date === undefined){
+					alert("Quelque chose s'est mal passé !"); // todo: better ui
+				} else {
+					$("#creation-debat").style.display = 'none';
+					$("#darken").style.display = 'none';		
+					$("#topic-debat").value = "";
+					$("#content-debat").value = "";		
+					getData(s);
+				}
 
-			$("#topic-debat").value = "";
-			$("#content-debat").value = "";
-	
-      // TODO: requête PUT vers le serveur (+ déplacer les deux lignes dans le .then)
+			})
+			.catch(() => {
+				alert("Erreur réseau !");
+			});
+
 		}
 	});
 
@@ -88,10 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		if(e.which === 13){
 			const content = $("#ajouter-message").value;
 			if(content !== ""){
-				console.log(content);
-				$("#ajouter-message").value = "";
-
-				// TODO: requete PUT vers le serveur
+				request("topic/" + s.currentTopic+ "/post/create ", s, "POST", true, {content: content})
+				.then((response) => {
+					if(response.content === undefined){
+						alert("Quelque chose s'est mal passé !");
+					} else {
+						$("#ajouter-message").value = "";
+						getData(s);
+					}
+				});
 			}
 		}
 	});
@@ -100,25 +114,52 @@ document.addEventListener('DOMContentLoaded', () => {
 	// RECHERCHE
 	$("#recherche-text").addEventListener('keyup', (e) => {
 		const query = $("#recherche-text").value;
-		const topics = State.topics;
-        State.topics = State.topics.filter((e) => (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1));
-		afficherListeTopic(State);
-        State.topics = topics;
+		const topics = s.topics;
+		s.topics = s.topics.filter((e) => (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1));
+		afficherListeTopic(s);
+		s.topics = topics;
 	});
-
-
 
 	// TRIER
 	$("#trier-value").addEventListener('change', (e) => {
 		const sort = $("#trier-value").value;
-		State.sort = sort;
-		afficherListeTopic(State);
+		s.sort = sort;
+		afficherListeTopic(s);
     });
     
     $("#trier-order").addEventListener('change', (e) => {
 		const order = $("#trier-order").value;
-		State.order = order;
-		afficherListeTopic(State);
+		s.order = order;
+		afficherListeTopic(s);
 	});
+
+
+
+	// VERROUILLER UN DEBAT
+	$("#lock-debat i").addEventListener('click', () => {
+		if($("#lock-debat i").style.cursor === "pointer"){
+			request("topic/"+s.currentTopic+"/clopen", s, "PUT", true)
+			.then((response)=>{
+				console.log(response); // todo
+				getData(s);
+			});
+		}
+	});
+
+
+
+	// SUPPRIMER UN DEBAT
+	$("#delete-debat i").addEventListener('click', () => {
+		if($("#delete-debat i").style.cursor === "pointer"){
+			request("topic/"+s.currentTopic+"/delete", s, "DELETE", true)
+			.then((response)=>{
+				console.log(response); // todo
+				getData(s);
+			});
+		}
+	});
+	
+
+	// EDITER UN DEBAT
 
 });

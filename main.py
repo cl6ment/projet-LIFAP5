@@ -13,7 +13,7 @@ headers = {
 		'Content-Type':'application/json'
 	}
 try:
-	data = r.get("https://localhost:8443/user/whoami", headers = headers)
+	data = r.get("https://lifap5.univ-lyon1.fr/user/whoami", headers = headers)
 	print('resp: ', data.text)
 except:
 	print('error')
