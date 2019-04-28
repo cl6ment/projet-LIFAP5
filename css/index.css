@@ -3,7 +3,7 @@ body{
 	margin: 0px;
 	font-family: open sans;
 	--accent-blue: #4d7cfe;
-	--bg-grey: #f5f6fa;
+	--bg-grey: #f1f1f3;
 }
 /*fab*/
 .fab{
@@ -163,7 +163,7 @@ header #recherche-text{
 	min-width: 100px;
 	width: 70vw;
 	max-width: 600px;
-	padding: 7px 5px;
+	padding: 10px 5px;
 	padding-left: 20px;
 	border-radius: 20px;
 	position: relative;
@@ -218,7 +218,10 @@ header #connexion:hover{
 	margin-bottom: 95px;
 }
 
-#liste-debat-overview #trier{
+
+
+/* trier */
+#trier{
 	padding: 2px 30px;
 	margin-top: 15px;
 	cursor: default;
@@ -226,6 +229,8 @@ header #connexion:hover{
 	font-size: 13px;
 	display: flex;
 }
+
+/* css des select */
 select{
 	appearance: none;
 	-moz-apperance: none;
@@ -244,24 +249,25 @@ select{
 	display: flex;
 	width: 100%;
 }
-#trier-value-wrap i{
+.select-wrap{
+	position: relative;
+}
+select + i{
 	position: absolute;
-	top: 25px;
-	right: 40px;
+	top: 10px;
+	right: 12px;
 	display: block;
 	color: black;
+	cursor: pointer;
 }
-#trier-order-wrap i{
-	position: absolute;
-	top: 25px;
-	left: calc(50% - 40px);
-	display: block;
-	color: black;
-}
-#liste-debat-overview #trier select:-moz-focusring{
+select:-moz-focusring{
 	color: transparent;
 	text-shadow: 0 0 0 #000;
 }
+
+
+
+
 
 #liste-debat-overview .fab{
 	margin: 0px auto;
@@ -332,17 +338,21 @@ select{
 	width: calc(100% - 20px);
 	border-radius: 5px;
 	margin: 10px auto;
+	padding-left: 10px;
 	background-color: var(--bg-grey);
 	height: 70px;
 	color:  white;
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
 	align-items: center;
 }
 #action-debat div{
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
-#action-debat i{
+#action-debat .icon{
 	height: 40px;
 	width: 40px;
 	border-radius: 40px;
@@ -352,6 +362,15 @@ select{
 	cursor: pointer;
 	font-size: 15px;
 	margin: 0px 10px;
+}
+#action-debat #edit-debat i{
+	background-color: rgb(129, 199, 132);
+}
+#action-debat #delete-debat i{
+	background-color: #E57373;
+}
+#sort-debat-wrap, #sort-debat-order-wrap{
+	width: 200px;
 }
 #debat-detailview .scrollbox{
 	overflow-y: auto;
@@ -443,17 +462,15 @@ select{
 	width: 50px;
 	height: 30px;
 	margin: 0px 10px;
-	color: white;
+	/* color: white; */
 	border-radius: 50px;
 	font-size: 12px;
-	background-color: var(--accent-blue);
+	/* background-color: var(--accent-blue); */
+	background-color: white;
+	color: var(--accent-blue);
 	border: 1px solid var(--accent-blue);
 	visibility: hidden;
 	transform: translateY(80px);
-}
-.action div:hover{
-	background-color: white;
-	color: var(--accent-blue);
 }
 /*effet d'apparition*/
 .action .like{
@@ -462,19 +479,21 @@ select{
 .action .dislike{
 	transition: all 320ms;
 }
+.action .fulfilled{
+	color: white;	
+	background-color: var(--accent-blue);
+}
 
 .action .supprimer{
+	color: white;
 	transition: all 440ms;
 	background-color: #EF5350;
 	border: 1px solid #EF5350;
 }
 .action .supprimer:hover{
 	color: #EF5350;
+	background-color: white;
 }
-.action .modifier{
-	transition: all 560ms;
-}
-
 .message:hover .action div{
 	transform: translateY(0px);
 	visibility: visible;
@@ -495,17 +514,13 @@ select{
 /*ajouter un message à un débat*/
 #debat-detailview #ajouter-message{
 	box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.1);
-/*	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	left: 0px;
-*/	width: 100%;
+	width: 100%;
 	border: none;
 	padding: 15px 15px;
 }
 
 
-@media all and (max-width: 800px){
+@media all and (max-width: 1100px){
 	header h1{
 		display: none;
 	}
@@ -522,7 +537,12 @@ select{
 	#debat-detailview{
 		margin-left: 0px;
 	}
-
+	#action-debat{
+		height: 140px;
+		justify-content: center;
+		flex-wrap: wrap;
+		align-items: center;
+	}
 }
 
 .liste-debat-overview-visible{

@@ -4,12 +4,12 @@
 
 	<meta charset="UTF-8"/>
 	<title id="titre">Parlophone</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<!-- javascript -->
 	<script src="./js/helper.js" type="text/javascript"></script> 
 	<script src="./js/generation.js" type="text/javascript"></script> 
 	<script src="./js/rendu.js" type="text/javascript"></script> 
-	<script src="./js/event.js" type="text/javascript"></script> 
 	<script src="./js/app.js" type="text/javascript"></script> 
 
 	<!-- polices -->
@@ -27,7 +27,7 @@
 	<div id="darken"></div>
 
 	<div id="connexion-popup">
-		<input type="text" id="clef-api" placeholder="Entrez votre clef d'api">
+		<input type="text" id="clef-api" placeholder="Entrez votre clef d'api" value="dbe5d1c1-4630-57d1-bf6a-dbd746c58565">
 		<div>
 			<div id="annuler">Annuler</div>
 			<div id="valider">Valider</div>
@@ -54,7 +54,6 @@
 		</div>
 		<input type="text" id="recherche-text" placeholder="Cherchez dans nos débats...">
 		<div id="connexion">Connexion</div>
-		<!-- <i class="material-icons">account_circle</i> -->
 	</header>
 
 
@@ -63,7 +62,7 @@
 	<nav id="liste-debat-overview">
 
 		<div id="trier">
-			<div id="trier-value-wrap">
+			<div id="trier-value-wrap" class="select-wrap">
 				<select id="trier-value">
 					<option value="date">Date</option>
 					<option value="topic">Topic</option>
@@ -73,7 +72,7 @@
 				<i class= "material-icons">arrow_drop_down</i>
 			</div>
 			
-			<div id="trier-order-wrap">
+			<div id="trier-order-wrap" class="select-wrap">
 				<select id="trier-order">
 					<option value="desc">Décroissant</option>
 					<option value="asc">Croissant</option>
@@ -94,22 +93,23 @@
 
 		<div class="scrollbox">
 			<div id="action-debat">
-
 				<div>
-					<div id="sort-debat-wrap">
+					<div id="sort-debat-wrap" class="select-wrap">
 						<select id="sort-debat">
-							<option value="date">Nombre de likes</option>
-							<option value="date">Nombre de dislikes</option>
-							<option value="topic">Date</option>
-							<option value="nbcontrib">Nom d'auteur</option>
+							<option value="date">Date</option>
+							<option value="nblikes">Nombre de likes</option>
+							<option value="nbdislikes">Nombre de dislikes</option>
+							<option value="nom">Nom d'auteur</option>
 						</select>
+						<i class= "material-icons">arrow_drop_down</i>
 					</div>
 	
-					<div id="sort-debat-order-wrap">
+					<div id="sort-debat-order-wrap" class="select-wrap">
 						<select id="sort-debat-order">
 							<option value="desc">Décroissant</option>
 							<option value="asc">Croissant</option>
 						</select>
+						<i class= "material-icons">arrow_drop_down</i>
 					</div>
 				</div>
 				
@@ -117,15 +117,15 @@
 
 				<div>
 					<div id="edit-debat">
-						<i class="material-icons">create</i>
+						<i class="material-icons icon">create</i>
 					</div>
 
 					<div id="delete-debat">
-						<i class="material-icons">delete</i>
+						<i class="material-icons icon">delete</i>
 					</div>
 
 					<div id="lock-debat">
-						<i class="material-icons">lock</i>
+						<i class="material-icons icon">lock</i>
 					</div>
 				</div>
 				

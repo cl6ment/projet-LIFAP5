@@ -12,7 +12,7 @@
  * @return {string} une string contenant du HTML
  */
 function genererTopicOverview(debat){
-	const color = (debat.open === false)?"#F44336":"#66BB6A";
+	const color = (debat.open === false)?"#E57373":"#66BB6A";
 
 	return `
 	<div class="debat-overview" id="_${debat._id}">
@@ -59,14 +59,13 @@ function genererDetailDebat(debat){
  */
 function genererContribution(state, contrib, i){
 
-	const allowModification = (contrib.user === state.user.login) ? 
+	const allowModification = (contrib.user === state.user) ? 
 	`<div class="supprimer">
 		<i class="material-icons">delete</i>
-	</div>
-
-	<div class="modifier">
-		<i class="material-icons">edit</i>
 	</div>` : ``;
+
+	const like = (contrib.likers.indexOf(state.user) !== -1) ? "fulfilled" : "";
+	const dislike = (contrib.dislikers.indexOf(state.user) !== -1) ? "fulfilled" : "";
 
 	return `
 	<div class="message" id="post-${i}" postID="${contrib._id}">
@@ -80,12 +79,12 @@ function genererContribution(state, contrib, i){
 		<div class="content">${contrib.content}</div>
 		<div class="action">
 
-			<div class="like">
+			<div class="like ${like}">
 				<i class="material-icons">thumb_up</i>
 				<span>${contrib.likers.length}</span>
 			</div>
 			
-			<div class="dislike">
+			<div class="dislike ${dislike}">
 				<i class="material-icons">thumb_down</i>
 				<span>${contrib.dislikers.length}</span>
 			</div>
@@ -93,6 +92,9 @@ function genererContribution(state, contrib, i){
 		</div>			
 	</div>`;
 }
+
+
+
 
 
 

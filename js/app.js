@@ -1,119 +1,110 @@
 /*jshint esversion: 9 */
 
-// const server = "https://lifap5.univ-lyon1.fr:8443/";
 const server = "https://lifap5.univ-lyon1.fr/";
-const api_key_value = "dbe5d1c1-4630-57d1-bf6a-dbd746c58565";
+let socket = new WebSocket("wss://lifap5.univ-lyon1.fr:443/stream/");
 
-// topics = [], sort = "date", order = "desc", key = "", user = ""
-function State(topics = [], sort = "date", order = "desc", key = "", user = ""){
+
+
+// state
+function State(
+		topics = [], 
+		x_api_key="", 
+		user="", 
+		sort="date", 
+		order="desc", 
+		sortContrib="date",
+		sortContribOrder="desc",
+		search = "", 
+		currentTopic = "", 
+		currentTopicID=0){
 	this.topics = topics;
 	this.sort = sort;
 	this.order = order;
-	this.api_key_value = key;
+	this.sortContrib = sortContrib;
+	this.sortContribOrder = sortContribOrder;
+	this.search = search;
 	this.user = user;
-	this.currentTopic = "";
-	this.currentTopicID = 0;
-}
-let s = new State(); // wut?
-s.api_key_value = api_key_value; // uniquement pour les tests !
-
-
-async function getTopicsIds(state){
-	return await request('topics/', state);
+	this.x_api_key = x_api_key;
+	this.currentTopic = currentTopic;
+	this.currentTopicID = currentTopicID;
 }
 
-async function getTopicContent(state, id){
-	return await request('topics/'+id, state);
-}
+// get Data
+function getData(_state=""){
+	return getTopicsId()
+	.then((data) => {
+		let listeTopics = [];
+		let listePosts = [];
+			data.forEach((val) => {
+			listeTopics.push(getTopicContent(val._id));
+			listePosts.push(getPostContent(val._id));
+		});
+			return Promise.all([...listeTopics, ...listePosts]);
+	})
+	.then((data) => {
+		const size = data.length/2;
+		let topics = data.slice(0, size);
+		
+		topics.forEach((_, i) => {
+			topics[i].contributions = data[size + i];
+		});
 
-async function getPostInTopic(state, id){
-	return await request("topic/"+id+"/posts", state);
-}
-
-function whoami(state){
-	request("user/whoami", state, "GET", true)
-	.then((whoami) => {
-		state.user = whoami;
+		return topics;
+	})
+	.then(topics => new State(
+			topics, 
+			_state.x_api_key, 
+			_state.user, 
+			_state.sort, 
+			_state.order, 
+			_state.sortContrib,
+			_state.sortContribOrder,
+			_state.search, 
+			_state.currentTopic, 
+			_state.currentTopicID)) // on passe les anciens paramètres qu'on veut sauvegarder
+	.then((state) => eventListener(state))
+	.then((state) => afficherListeTopic(state))
+	.then((state) => {
+		socket.onmessage = (e) => {
+			getData(state);
+		};
+		return state;
 	});
 }
 
 
+// refresh only topic whose _id is given in parameter
+function refreshCurrentTopic(_state, _id, _index){
 
-function getData(s){
-	getTopicsIds(s)
-	.then(function(data){
-		return data;
-	})
-	.then(function(listeTopic){
-		let tab = [];
-		listeTopic.forEach((topic)=>{
-			tab.push(getTopicContent(s, topic._id));
-		});
-		return tab;
-	})
-	.then(function(topic){
-		return Promise.all(topic);
-	})
-	.then(function(listeTopic){
-		s.topics = listeTopic;
-		let tab = [];
-		listeTopic.forEach((topic)=>{
-			tab.push(getPostInTopic(s, topic._id));
-		});
-		return tab;
-	})
-	.then(function(listePosts){
-		return Promise.all(listePosts);
-	}).then(function(listePosts){
+	return Promise.all([getTopicContent(_id), getPostContent(_id)])
+	.then((data) => {
+		
+		_state.currentTopic = _id;
+		_state.currentTopicID = _index;
+		_state.topics[_index] = data[0];
+		_state.topics[_index].contributions = data[1];
 
-		listePosts.forEach((v, i) => {
-			s.topics[i].contributions = v;
-		});
-
-		afficherListeTopic(s);
-	});
+		return _state;
+	})
+	.then((state) => eventListener(state))
+	.then((state) => afficherDebat(state, state.topics[state.currentTopicID]));
 }
 
 
-getData(s);
-whoami(s);
 
 
 
-// getTopicsIds(s)
-// .then(function(data){
-// 	return data;
-// })
-// .then(function(listeTopic){
-// 	let tab = [];
-// 	listeTopic.forEach((topic)=>{
-// 		tab.push(getTopicContent(s, topic._id));
-// 	});
-// 	return tab;
-// })
-// .then(function(topic){
-// 	return Promise.all(topic);
-// })
-// .then(function(listeTopic){
-// 	s.topics = listeTopic;
-// 	let tab = [];
-// 	listeTopic.forEach((topic)=>{
-// 		tab.push(getPostInTopic(s, topic._id));
-// 	});
-// 	return tab;
-// })
-// .then(function(listePosts){
-// 	return Promise.all(listePosts);
-// }).then(function(listePosts){
 
-// 	listePosts.forEach((v, i) => {
-// 		s.topics[i].contributions = v;
-// 	});
 
-// 	afficherListeTopic(s);
-// })
-// .then(function(){
-// 	return whoami(s);
-// }).then(function(whoami){
-// 	s.user = whoami;
-// });
+
+// "main"
+document.addEventListener("DOMContentLoaded", () => {
+	if($("#mocha") === null){
+		statelessEventListener();
+		getData();	
+	}
+
+	window.addEventListener('beforeunload', () => {
+		socket.close();
+	});
+});

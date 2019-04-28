@@ -11,6 +11,8 @@
  */
 function afficherDebat(state, debat){
 
+	triContribs(state);
+
 	const lock = $("#lock-debat i");
 	const remove = $("#delete-debat i");
 	const ajouter = $("#edit-debat i");
@@ -22,13 +24,13 @@ function afficherDebat(state, debat){
 	// désactiver l'ajout de contributions sur les sujet clos
 	if(debat.open === false){
 		ajouter.disabled = true;
-		lock.style.backgroundColor = "#EF5350";
+		lock.style.backgroundColor = "#E57373";
 	} else {
 		ajouter.disabled = false;
 		lock.style.backgroundColor = "#81C784";
 	}
 
-	if(debat.user !== state.user.login){
+	if(debat.user !== state.user){
 		lock.style.cursor = "not-allowed";
 		remove.style.cursor = "not-allowed";
 		ajouter.style.cursor = "not-allowed";
@@ -42,56 +44,36 @@ function afficherDebat(state, debat){
 	
 
 	// écouteurs sur les contributions d'un débat
-	debat.contributions.forEach((v, i) => {
-		$("#post-"+i+" .dislike").addEventListener('click', (e) => {
+	debat.contributions.forEach((_, i) => {
+		$("#post-"+i+" .dislike").addEventListener('click', () => {
 			const postID = $("#post-"+i).getAttribute('postID');
-
-			request("topic/" + s.currentTopic + "/post/" + postID + "/dislike", s, "PUT", true)
-			.then((response) => {
-				console.log(response); // todo
-				getData(s);
-			});
-
+			request("topic/" + state.currentTopic + "/post/" + postID + "/dislike", state, true, "PUT")
+			.then(() => refreshCurrentTopic(state, state.currentTopic, state.currentTopicID));
 		});
 
-		$("#post-"+i+" .like").addEventListener('click', (e) => {
+		$("#post-"+i+" .like").addEventListener('click', () => {
 			const postID = $("#post-"+i).getAttribute('postID');
-
-			request("topic/" + s.currentTopic + "/post/" + postID + "/like", s, "PUT", true)
-			.then((response) => {
-				console.log(response); // todo
-				getData(s);
-			});
-
+			request("topic/" + state.currentTopic + "/post/" + postID + "/like", state, true, "PUT")
+			.then(() => refreshCurrentTopic(state, state.currentTopic, state.currentTopicID));
 		});
 
 		// désactive les event listener pour les commentaires autre que les siens
 		if($("#post-"+i+" .supprimer") !== null){
-			$("#post-"+i+" .supprimer").addEventListener('click', (e) => {
+			$("#post-"+i+" .supprimer").addEventListener('click', () => {
 				const postID = $("#post-"+i).getAttribute('postID');
-
-				request("topic/" + s.currentTopic + "/post/" + postID + "/delete", s, "DELETE", true)
-				.then((response) => {
-					console.log(response); // todo
-					getData(s);
-				});
-
-			});
-	
-			$("#post-"+i+" .modifier").addEventListener('click', (e) => {
-				console.log('[modifier]');
-				console.log($("#post-"+i).getAttribute('postID'));
-				// todo: faire apparaitre une popup pour la modification ?
-				// todo: requete vers le serveur pour modifier la contrib
+				request("topic/" + state.currentTopic + "/post/" + postID + "/delete", state, true, "DELETE")
+				.then(() => refreshCurrentTopic(state, state.currentTopic, state.currentTopicID));
 			});
 		}
 
 	});
+
+	return state;
 }
 
 
 // affiche la liste complète des sujet d'un débat
-function afficherListeTopic(state){	
+function afficherListeTopic(state){
 	triDebats(state);
 
 	const html = $("#liste-debat-overview .scrollbox");
@@ -102,10 +84,11 @@ function afficherListeTopic(state){
 	}, "");
 
 
-	// afficher le premier débat
-	state.currentTopic = state.topics[state.currentTopicID]._id;
-	afficherDebat(state, state.topics[state.currentTopicID]);
-
+	// update la view du débat
+	if(state.topics.length !== 0){
+		state.currentTopic = state.topics[state.currentTopicID]._id;
+		afficherDebat(state, state.topics[state.currentTopicID]);	
+	}
 
     // pose des écouteurs sur les topics
 	state.topics.forEach((debat, i) => {
@@ -117,4 +100,5 @@ function afficherListeTopic(state){
 		});
 	});
 
+	return state;
 }
