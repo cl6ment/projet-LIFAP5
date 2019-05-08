@@ -1,4 +1,4 @@
-/*jshint esversion: 9 */
+/*jshint esversion: 8*/
 
 const socket = new WebSocket('wss://lifap5.univ-lyon1.fr:443/stream/');
 let heartbeat_interval = null;
@@ -10,7 +10,7 @@ socket.onopen = (event) => {
 
   heartbeat_interval = setInterval(() => {
     const heartbeat = {type : 'heartbeat', time: Date.now()};
-    console.log(`Sent: ${JSON.stringify(heartbeat)}`)
+    console.log(`Sent: ${JSON.stringify(heartbeat)}`);
     socket.send(JSON.stringify(heartbeat));
   }, 30000);
 };

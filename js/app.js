@@ -1,4 +1,11 @@
-/*jshint esversion: 9 */
+/*jshint strict: global*/
+/*jshint esversion: 8*/
+/*jshint browser: true */
+/*jshint devel: true */
+/*jshint eqeqeq: true*/
+/*jshint undef:true*/
+/*global  getTopicsId, getTopicContent, getPostContent, eventListener, afficherListeTopic, $, afficherDebat, statelessEventListener*/
+"use strict";
 
 const server = "https://lifap5.univ-lyon1.fr/";
 let socket = new WebSocket("wss://lifap5.univ-lyon1.fr:443/stream/");
@@ -67,6 +74,8 @@ function getData(_state=""){
 	.then((state) => {
 		socket.onmessage = (e) => {
 			getData(state);
+			console.log("websocket message !");
+			console.log(e);
 		};
 		return state;
 	});

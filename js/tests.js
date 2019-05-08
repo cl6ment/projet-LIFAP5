@@ -1,4 +1,5 @@
-/*jshint esversion: 9 */
+/*jshint esversion: 8*/
+/*jshint mocha:true */
 
 
 suite("Tests", () => {
@@ -10,8 +11,8 @@ suite("Tests", () => {
 
 
     test("compareDate", () => {
-        chai.assert.equal("-1", compareDate("2019-03-31T14:54:13.808Z", "2019-04-31T14:54:13.808Z").toString());
-        chai.assert.equal("1", compareDate("2019-04-31T14:54:13.808Z", "2019-03-31T14:54:13.808Z").toString());
+        chai.assert.equal("1", compareDate("2019-03-31T14:54:13.808Z", "2019-04-31T14:54:13.808Z").toString());
+        chai.assert.equal("-1", compareDate("2019-04-31T14:54:13.808Z", "2019-03-31T14:54:13.808Z").toString());
         chai.assert.equal("-1", compareDate("2019-04-31T14:54:13.808Z", "2019-04-31T14:55:13.808Z").toString());
     });
 

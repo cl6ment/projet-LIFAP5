@@ -1,4 +1,11 @@
-/*jshint esversion: 9 */
+/*jshint strict: global*/
+/*jshint esversion: 8*/
+/*jshint browser: true */
+/*jshint devel: true */
+/*jshint eqeqeq: true*/
+/*jshint undef:true*/
+/*global transformeDate, recupDateDerniereActivite*/
+"use strict";
 
 
 // ===============================================

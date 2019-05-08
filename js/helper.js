@@ -1,4 +1,11 @@
-/*jshint esversion: 9 */
+/*jshint strict: global*/
+/*jshint esversion: 8*/
+/*jshint browser: true */
+/*jshint devel: true */
+/*jshint eqeqeq: true*/
+/*jshint undef:true*/
+/*global server, afficherDebat, afficherListeTopic, getData, refreshCurrentTopic*/
+"use strict";
 
 // jquery lol
 const $ = (e) => document.querySelector(e);
@@ -19,7 +26,7 @@ async function request(path, state, auth=false, method="GET", p={}){
     }
     let payload = {method: method, headers: header};
     
-    if(Object.values(p).length != 0)
+    if(Object.values(p).length !== 0)
         payload.body = JSON.stringify(p);      
     
     const url = server + path;
@@ -71,7 +78,7 @@ function search(state){
     const query = $("#recherche-text").value;
     const topics = state.topics;
     if(query !== ""){
-        state.topics = state.topics.filter((e) => (e.desc.indexOf(query) != -1 || e.topic.indexOf(query) != -1));
+        state.topics = state.topics.filter((e) => (e.desc.indexOf(query) !== -1 || e.topic.indexOf(query) !== -1));
     }
     afficherListeTopic(state);
     state.topics = topics;
