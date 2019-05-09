@@ -387,6 +387,14 @@ select:-moz-focusring{
 	font-size: 15px;
 	color: #424242;
 }
+#sujet::after{
+	content: "";
+	height: 1px;
+	width: 90%;
+	margin: 0px auto;
+	background-color: var(--bg-grey);
+	display: block;
+}
 #sujet h1{
 	text-align: center;
 	margin-top: 35vh;

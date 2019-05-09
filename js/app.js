@@ -4,12 +4,23 @@
 /*jshint devel: true */
 /*jshint eqeqeq: true*/
 /*jshint undef:true*/
-/*global  getTopicsId, getTopicContent, getPostContent, eventListener, afficherListeTopic, $, afficherDebat, statelessEventListener*/
+/*global getTopicsId, getTopicContent, getPostContent, eventListener, afficherListeTopic, $, afficherDebat, statelessEventListener*/
 "use strict";
 
 const server = "https://lifap5.univ-lyon1.fr/";
-let socket = new WebSocket("wss://lifap5.univ-lyon1.fr:443/stream/");
 
+// sockets
+let socket = new WebSocket("wss://lifap5.univ-lyon1.fr:443/stream/");
+let heartbeat_interval = null;
+let isTabActive = true;
+
+// hearbeat
+socket.onopen = () => {
+  heartbeat_interval = setInterval(() => {
+    const heartbeat = {type : 'heartbeat', time: Date.now()};
+    socket.send(JSON.stringify(heartbeat));
+  }, 30000);
+};
 
 
 // state
@@ -42,11 +53,11 @@ function getData(_state=""){
 	.then((data) => {
 		let listeTopics = [];
 		let listePosts = [];
-			data.forEach((val) => {
+		data.forEach((val) => {
 			listeTopics.push(getTopicContent(val._id));
 			listePosts.push(getPostContent(val._id));
 		});
-			return Promise.all([...listeTopics, ...listePosts]);
+		return Promise.all([...listeTopics, ...listePosts]);
 	})
 	.then((data) => {
 		const size = data.length/2;
@@ -72,10 +83,10 @@ function getData(_state=""){
 	.then((state) => eventListener(state))
 	.then((state) => afficherListeTopic(state))
 	.then((state) => {
-		socket.onmessage = (e) => {
+		socket.onmessage = () => {
 			getData(state);
-			console.log("websocket message !");
-			console.log(e);
+			console.log("[websocket] - changes has been made !");
+			if(isTabActive === false) $("title").innerHTML="(*) - Parlophone";
 		};
 		return state;
 	});
@@ -115,5 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	window.addEventListener('beforeunload', () => {
 		socket.close();
+		clearInterval(heartbeat_interval);
 	});
 });

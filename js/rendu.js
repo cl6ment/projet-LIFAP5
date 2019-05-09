@@ -14,7 +14,7 @@
 
 /**
  * @desc Affiche un débat et la liste de ses contribution
- * @param {*} debat 
+ * @param {*} debat un objet contenant le debat a afficher
  */
 function afficherDebat(state, debat){
 
@@ -79,7 +79,13 @@ function afficherDebat(state, debat){
 }
 
 
-// affiche la liste complète des sujet d'un débat
+// 
+
+
+/**
+ * @desc affiche la liste complète des sujet d'un débat
+ * @param {*} state le state de l'application
+ */
 function afficherListeTopic(state){
 	triDebats(state);
 
@@ -92,7 +98,7 @@ function afficherListeTopic(state){
 
 
 	// update la view du débat
-	if(state.topics.length !== 0){
+	if(state.topics.length !== 0){ // need to fix this, set default value to state + update it correctly
 		state.currentTopic = state.topics[state.currentTopicID]._id;
 		afficherDebat(state, state.topics[state.currentTopicID]);	
 	}

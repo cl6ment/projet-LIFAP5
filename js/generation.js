@@ -73,7 +73,6 @@ function genererContribution(state, contrib, i){
 
 	const like = (contrib.likers.indexOf(state.user) !== -1) ? "fulfilled" : "";
 	const dislike = (contrib.dislikers.indexOf(state.user) !== -1) ? "fulfilled" : "";
-
 	return `
 	<div class="message" id="post-${i}" postID="${contrib._id}">
 
@@ -86,12 +85,12 @@ function genererContribution(state, contrib, i){
 		<div class="content">${contrib.content}</div>
 		<div class="action">
 
-			<div class="like ${like}">
+			<div class="like ${like}" title="likers: ${contrib.likers.join(", ")}">
 				<i class="material-icons">thumb_up</i>
 				<span>${contrib.likers.length}</span>
 			</div>
 			
-			<div class="dislike ${dislike}">
+			<div class="dislike ${dislike}" title="dislikers: ${contrib.dislikers.join(", ")}">
 				<i class="material-icons">thumb_down</i>
 				<span>${contrib.dislikers.length}</span>
 			</div>

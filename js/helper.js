@@ -4,14 +4,22 @@
 /*jshint devel: true */
 /*jshint eqeqeq: true*/
 /*jshint undef:true*/
-/*global server, afficherDebat, afficherListeTopic, getData, refreshCurrentTopic*/
+/*jshint -W020 */ // dirty fix, look away please
+/*global isTabActive, server, afficherDebat, afficherListeTopic, getData, refreshCurrentTopic*/
 "use strict";
 
 // jquery lol
 const $ = (e) => document.querySelector(e);
 
 
-// fetch, but supercharged
+/**
+ * @desc fetch, but supercharged
+ * @param {*} path the path to reach on the server
+ * @param {*} state the state of the application
+ * @param {*} auth do you want to perform an authentified request ?
+ * @param {*} method GET, POST, PUT, DELETE
+ * @param {*} p the parameters to add
+ */
 async function request(path, state, auth=false, method="GET", p={}){
     
     let header  = new Headers({
@@ -41,12 +49,17 @@ async function request(path, state, auth=false, method="GET", p={}){
 }
 
 
-// évite les eventlisteners multiples
+/**
+ * @desc destroy state-ish event listener to prevent multiple event listeners
+ * @param {*} e the element where the listener is applied to
+ */
 function deleteEventListener(e){
 	let elt = $(e);
 	const clone = elt.cloneNode(true);
 	elt.parentNode.replaceChild(clone, elt);
 }
+
+
 
 // requetes réseau
 function whoami(state){
@@ -76,8 +89,9 @@ function getKey(state){
 }
 function search(state){
     const query = $("#recherche-text").value;
-    const topics = state.topics;
+    const topics = state.topics; // state.topics[state.currentTopicID]
     if(query !== ""){
+        state.search = query;
         state.topics = state.topics.filter((e) => (e.desc.indexOf(query) !== -1 || e.topic.indexOf(query) !== -1));
     }
     afficherListeTopic(state);
@@ -165,9 +179,11 @@ function addPost(state, e){
 }
 
 
-// state-dependent listeners (</3)
+/**
+ * @desc state dependent listeners
+ * @param {*} state application state
+ */
 function eventListener(state){
-    
     [
         "#connexion-popup #valider",
         "#creation-debat #publier",
@@ -182,7 +198,6 @@ function eventListener(state){
         "#sort-debat",
         "#sort-debat-order",
     ].map((e) => deleteEventListener(e));
-    
 
 	$("#recherche-text").addEventListener('keyup', () => search(state));
 	$("#connexion-popup #valider").addEventListener('click', () => getKey(state));
@@ -200,41 +215,62 @@ function eventListener(state){
 
 
 
-// state-independent listeners (<3)
+/**
+ * @desc state-independent listeners
+ */
 function statelessEventListener(){
+    // handle connection button click
     $("#connexion").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'block';
 		$("#darken").style.display = 'block';
-	});
+    });
+    
+    // handle canceling connection 
 	$("#connexion-popup #annuler").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
 	});
 
+    // manage mobile menu click
 	$("#mobile-menu").addEventListener('click', () => {
 		if($("#liste-debat-overview").style.left === "0px"){
 			$("#liste-debat-overview").style.left = "-100vw";
 		} else {
 			$("#liste-debat-overview").style.left = "0px";
 		}
-	});
+    });
+    
+    // handle darken user interactions
 	$("#darken").addEventListener('click', () => {
 		$("#connexion-popup").style.display = 'none';
 		$("#darken").style.display = 'none';
 		$("#creation-debat").style.display = 'none';
 	});
 
+    // show up topic creation on fab click
 	$(".fab").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'block';
 		$("#darken").style.display = 'block';
 	});
 
+    // cancel a debat & erase the filled fields
 	$("#creation-debat #annuler").addEventListener('click', () => {
 		$("#creation-debat").style.display = 'none';
 		$("#darken").style.display = 'none';
 		$("#topic-debat").value = "";
 		$("#content-debat").value = "";
-	});
+    });
+    
+    // force show the menu on resize if it has been hidden
+    window.addEventListener('resize', () =>{
+        if(window.innerWidth > 1100 && $("#liste-debat-overview").style.left !== "0px"){
+            $("#liste-debat-overview").style.left = "0px";
+        }
+    });
+
+    window.addEventListener('focus', () => {isTabActive = true; $("title").innerHTML="Parlophone";});
+    window.addEventListener('blur', () => {isTabActive = false;});
+
 }
 
 
@@ -261,14 +297,16 @@ function recupDateDerniereActivite(contrib){
 /**
  * @desc Transforme une date js dans un format lisible et plaisant
  * @param {*} d une date au format renvoyé par le constructeur new Date()
- * @return "Jamais" si la date n'a pas un format correct, une date au format jj/mm/yyyy sinon
+ * @return "Jamais" si la date n'a pas un format correct, une date au format jj/mm/yyyy - H:M sinon
  */
 function transformeDate(d){
 	if(d === false){
 		return "Jamais";
 	} else {		
-		d = new Date(d);
-		return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+        d = new Date(d);
+        const a = ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+        const b = d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2);
+		return a + ' - ' + b;
 	}
 }
 
@@ -335,9 +373,9 @@ function compareDate(da, db){
 
 
 /**
- * @desc Tri les débat suivant les paramètres du state
- * @param {*} state 
- * @return void
+ * @desc sort topics
+ * @param {*} state application state
+ * @return void (you dont need to return the state, it's no gonna be chained)
  */
 function triDebats(state){
     // tri par date
@@ -390,6 +428,11 @@ function triDebats(state){
 
 
 
+
+/**
+ * @desc perform sorting on a debat's contributions
+ * @param {*} _state the state of the application
+ */
 function triContribs(_state){
     const _id = _state.currentTopicID;
     
@@ -420,7 +463,7 @@ function triContribs(_state){
         });
     }
     
-    // tri par nombre de contribution
+    // tri par nombre de likes
     if(_state.sortContrib === "nblikes"){
         let sort = (a, b) => ((a.length > b.length) ? -1 : 1);
         
@@ -432,7 +475,7 @@ function triContribs(_state){
             return sort(a.likers, b.likers);
         });    
     }
-
+    // tri par nombre de dislikes
     if(_state.sortContrib === "nbdislikes"){
         let sort = (a, b) => ((a.length > b.length) ? -1 : 1);
         

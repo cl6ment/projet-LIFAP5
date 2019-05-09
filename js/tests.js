@@ -1,5 +1,5 @@
 /*jshint esversion: 8*/
-/*jshint mocha:true */
+/*jshint mocha: true */
 
 
 suite("Tests", () => {
