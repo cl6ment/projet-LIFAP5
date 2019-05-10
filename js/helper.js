@@ -32,7 +32,7 @@ async function request(path, state, auth=false, method="GET", p={}){
             'Content-Type':'application/json'
         });
     }
-    let payload = {method: method, headers: header};
+    const payload = {method: method, headers: header};
     
     if(Object.values(p).length !== 0)
         payload.body = JSON.stringify(p);      
@@ -88,14 +88,19 @@ function getKey(state){
     }
 }
 function search(state){
+
     const query = $("#recherche-text").value;
-    const topics = state.topics; // state.topics[state.currentTopicID]
+    const id = state.currentTopicID;
+    const contribs = state.topics[id].contributions;
+
     if(query !== ""){
         state.search = query;
-        state.topics = state.topics.filter((e) => (e.desc.indexOf(query) !== -1 || e.topic.indexOf(query) !== -1));
+        state.topics[id].contributions = contribs.filter((e) => (e.content.indexOf(query) !== -1 || e.user.indexOf(query) !== -1));
+        afficherDebat(state, state.topics[id]);
     }
-    afficherListeTopic(state);
-    state.topics = topics;
+
+    afficherDebat(state, state.topics[id]);    
+    state.topics[id].contributions = contribs;
 }
 function addTopic(state){
     const topic = $("#topic-debat").value;
@@ -171,7 +176,10 @@ function addPost(state, e){
                     alert("Quelque chose s'est mal passé !");
                 } else {
                     $("#ajouter-message").value = "";
-                    getData(state);
+                    console.log(response);
+                    state.topics[state.currentTopicID].contributions.push(response);
+                    console.log(state.topics[state.currentTopicID]);
+                    afficherDebat(state, state.topics[state.currentTopicID]);
                 }
             });
         }

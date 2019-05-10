@@ -27,7 +27,7 @@ function afficherDebat(state, debat){
 	// afficher le débat & ses contributions sur le panneau de droite
 	$("#debat-detailview #sujet").innerHTML = genererDetailDebat(debat);
 	$("#messages").innerHTML = genererListeContributions(state, debat);
-
+	
 	// désactiver l'ajout de contributions sur les sujet clos
 	if(debat.open === false){
 		ajouter.disabled = true;
@@ -98,7 +98,7 @@ function afficherListeTopic(state){
 
 
 	// update la view du débat
-	if(state.topics.length !== 0){ // need to fix this, set default value to state + update it correctly
+	if(state.topics.length !== 0 && state.currentTopic === ""){
 		state.currentTopic = state.topics[state.currentTopicID]._id;
 		afficherDebat(state, state.topics[state.currentTopicID]);	
 	}
