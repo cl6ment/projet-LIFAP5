@@ -6,7 +6,7 @@ suite("Tests", () => {
 
     test("transformeDate", () => {
         chai.assert.equal("jamais", transformeDate(false).toLowerCase());
-        chai.assert.equal("31/03/2019", transformeDate("2019-03-31T14:54:13.808Z").toLowerCase());
+        chai.assert.equal("31/03/2019 - 16:54", transformeDate("2019-03-31T14:54:13.808Z").toLowerCase());
     });
 
 
