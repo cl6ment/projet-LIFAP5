@@ -176,9 +176,7 @@ function addPost(state, e){
                     alert("Quelque chose s'est mal passé !");
                 } else {
                     $("#ajouter-message").value = "";
-                    console.log(response);
                     state.topics[state.currentTopicID].contributions.push(response);
-                    console.log(state.topics[state.currentTopicID]);
                     afficherDebat(state, state.topics[state.currentTopicID]);
                 }
             });

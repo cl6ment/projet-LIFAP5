@@ -85,7 +85,6 @@ function getData(_state=""){
 	.then((state) => {
 		socket.onmessage = () => {
 			getData(state);
-			console.log("[websocket] - changes has been made !");
 			if(isTabActive === false) $("title").innerHTML="(*) - Parlophone";
 		};
 		return state;
