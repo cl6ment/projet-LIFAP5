@@ -4,7 +4,7 @@
 /*jshint devel: true */
 /*jshint eqeqeq: true*/
 /*jshint undef:true*/
-/*global transformeDate, recupDateDerniereActivite*/
+/*global filterXSS, transformeDate, recupDateDerniereActivite*/
 "use strict";
 
 
@@ -45,14 +45,14 @@ function genererTopicOverview(debat){
  */
 function genererDetailDebat(debat){
 	return `
-	<h2>${debat.topic}</h2>
+	<h2>${filterXSS(debat.topic)}</h2>
 	<div id="auteur">
 		<span>Initiateur: </span> ${debat.user}				
 	</div>
 	<div id="date">
 		<span>Début: </span>${transformeDate(debat.date)}		
 	</div>
-	<p>${debat.desc}</p>`;
+	<p>${filterXSS(debat.desc)}</p>`;
 }
 
 
@@ -82,7 +82,7 @@ function genererContribution(state, contrib, i){
 			<div class="date">${transformeDate(contrib.date)}</div>
 		</div>
 
-		<div class="content">${contrib.content}</div>
+		<div class="content">${filterXSS(contrib.content)}</div>
 		<div class="action">
 
 			<div class="like ${like}" title="likers: ${contrib.likers.join(", ")}">

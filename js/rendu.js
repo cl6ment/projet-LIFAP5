@@ -106,7 +106,13 @@ function afficherListeTopic(state){
     // pose des écouteurs sur les topics
 	state.topics.forEach((debat, i) => {
 		// au clic, on affiche le débat
+
 		$("#_"+debat._id).addEventListener('click', () => {
+
+			state.topics.forEach((d) => {$("#_"+d._id + " .sujet").style.color = "#616161";});
+
+			$("#_"+debat._id + " .sujet").style.color = "var(--accent-blue)";
+
 			state.currentTopic = debat._id;
 			state.currentTopicID = i;
 			afficherDebat(state, debat);

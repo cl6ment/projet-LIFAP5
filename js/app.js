@@ -61,11 +61,15 @@ function getData(_state=""){
 	})
 	.then((data) => {
 		const size = data.length/2;
-		let topics = data.slice(0, size);
+		const topics = data.slice(0, size);
 		
-		topics.forEach((_, i) => {
-			topics[i].contributions = data[size + i];
+		topics.map((t, i) => {
+			t.contributions = data[size + i];
 		});
+
+		// topics.forEach((_, i) => {
+		// 	topics[i].contributions = data[size + i];
+		// });
 
 		return topics;
 	})

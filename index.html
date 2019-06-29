@@ -21,13 +21,15 @@
 	<!-- css -->
 	<link href="./css/index.css" rel="stylesheet">
 
+	<!-- anti xss -->
+	<script src="https://rawgit.com/leizongmin/js-xss/master/dist/xss.js"></script>
 </head>
 <body>
 
 	<div id="darken"></div>
 
 	<div id="connexion-popup">
-		<input type="text" id="clef-api" placeholder="Entrez votre clef d'api" value="dbe5d1c1-4630-57d1-bf6a-dbd746c58565">
+		<input type="text" id="clef-api" placeholder="Entrez votre clef d'api">
 		<div>
 			<div id="annuler">Annuler</div>
 			<div id="valider">Valider</div>
@@ -113,8 +115,7 @@
 					</div>
 				</div>
 				
-
-
+				
 				<div>
 					<div id="edit-debat">
 						<i class="material-icons icon">create</i>
