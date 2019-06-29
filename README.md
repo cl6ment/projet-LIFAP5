@@ -12,7 +12,7 @@
 
 ## Description du projet
 
-<img src="screen.png" width="300px">
+<img src="screen.png" width="100%">
 
 Ce projet consiste à réaliser un gestionnaire de débat, ie un forum sur lequel les gens peuvent
 échanger des points de vue constructif.
