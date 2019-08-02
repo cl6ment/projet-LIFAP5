@@ -22,18 +22,18 @@ Le fichier index.html contient l'application à proprement parler tandis que le 
 
 ## Test fonctionnels manuels
 
-* Ajouter un sujet de débat: ok
-* Ajouter une contribution: ok
-* Trier les débats: ok
-* Chercher dans les contributions: ok
-* S'authentifier: ok
-* Verouiller un débat: ok
-* Supprimer un débat: ok
-* Supprimer une contribution: ok
-* Accéder à l'appli sur mobile: ok
-* Liker/disliker des contributions: ok
-* Smart refresh: ok
-* Websockets: ok
-* Modifier l'onglet en cas de nouveaux messages: ok
+* Ajouter un sujet de débat: ✅
+* Ajouter une contribution: ✅
+* Trier les débats: ✅
+* Chercher dans les contributions: ✅
+* S'authentifier: ✅
+* Verouiller un débat: ✅
+* Supprimer un débat: ✅
+* Supprimer une contribution: ✅
+* Accéder à l'appli sur mobile: ✅
+* Liker/disliker des contributions: ✅
+* Smart refresh: ✅
+* Websockets: ✅
+* Modifier l'onglet en cas de nouveaux messages: ✅
 
 
