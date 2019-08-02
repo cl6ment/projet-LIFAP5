@@ -1,13 +1,10 @@
 # PROJET LIFAP5 - L2 informatique
-## 2018/2019
-
-
+### 2018/2019
 
 ## Etudiants
+
 - HERVE Clément
 - TEIXEIRA MAGALHAES Tiago
-
-
 
 
 ## Description du projet
